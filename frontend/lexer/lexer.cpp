@@ -101,7 +101,21 @@ std::vector<Token> Lexer::Tokenize(std::string_view content)
             Advance();
             continue;
         }
-        // + - / * %
+        // * (pointer)
+        if (c == '*')
+        {
+            tokens.emplace_back(TokenType::Star, pos, std::string_view(current_file.data() + pos, 1));
+            Advance();
+            continue;
+        }
+        // & (reference)
+        if (c == '&')
+        {
+            tokens.emplace_back(TokenType::Ampersand, pos, std::string_view(current_file.data() + pos, 1));
+            Advance();
+            continue;
+        }
+        // + - / % (operators, but * is handled separately for pointers)
         if (isOperator(c))
         {
             tokens.emplace_back(TokenType::Operator, pos, std::string_view(current_file.data() + pos, 1));

@@ -24,7 +24,9 @@ enum TokenType
     ConstString,
     Operator,
     Assign,
-    Ellipsis, // ... for varargs
+    Star,      // * for pointer
+    Ampersand, // & for reference
+    Ellipsis,  // ... for varargs
     EOF_TOKEN
 };
 

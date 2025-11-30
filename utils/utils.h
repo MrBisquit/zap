@@ -35,7 +35,7 @@ inline bool isKeyword(std::string_view keyword)
 
 inline bool isOperator(char op)
 {
-    if (op == '+' || op == '-' || op == '*' || op == '/' || op == '%')
+    if (op == '+' || op == '-' || op == '/' || op == '%')
     {
         return true;
     }

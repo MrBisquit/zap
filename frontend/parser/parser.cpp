@@ -66,18 +66,13 @@ Node Parser::ParseFunction()
         Synchronize(TokenType::LBrace);
     }
     Consume(TokenType::Arrow, "Expected '->' after function parameters");
-    Token returnTypeTok = Consume(TokenType::Id, "Expected return type after '->'"); // TODO: parseType();
+
+    IgnType rt = ParseType();
 
     Node funcNode;
     funcNode.nodeType = NodeType::TFun;
     funcNode.funcName = std::string(funcName);
     funcNode.paramList = params;
-    IgnType rt;
-    rt.isPtr = false;
-    rt.isStruct = false;
-    rt.isArray = false;
-    rt.isRef = false;
-    rt.base = stringToPrimType(std::string(returnTypeTok.value));
     funcNode.returnType = rt;
 
     // Check if it's a declaration (fn foo();) or definition (fn foo() { ... })
@@ -99,6 +94,34 @@ Node Parser::ParseFunction()
 
     NodeId funcId = arena.create(funcNode);
     return arena.get(funcId);
+}
+
+IgnType Parser::ParseType()
+{
+    IgnType type;
+    type.isPtr = false;
+    type.isStruct = false;
+    type.isArray = false;
+    type.isRef = false;
+
+    if (Peek().type == TokenType::Ampersand)
+    {
+        Advance();
+        type.isRef = true;
+    }
+
+    while (Peek().type == TokenType::Star)
+    {
+        Advance();
+        type.isPtr = true;
+    }
+
+    // Parse base type
+    Token typeNameTok = Consume(TokenType::Id, "Expected type name");
+    std::string typeName = std::string(typeNameTok.value);
+    type.base = stringToPrimType(typeName);
+
+    return type;
 }
 
 std::vector<Param> Parser::ParseParams()
@@ -132,14 +155,8 @@ std::vector<Param> Parser::ParseParams()
 
         std::string paramName = std::string(Consume(TokenType::Id, "Expected parameter name").value);
         Consume(TokenType::Colon, "Expected ':' after parameter name");
-        std::string typeName = std::string(Consume(TokenType::Id, "Expected type name").value);
 
-        IgnType paramType;
-        paramType.isPtr = false;
-        paramType.isStruct = false;
-        paramType.isArray = false;
-        paramType.isRef = false;
-        paramType.base = stringToPrimType(typeName);
+        IgnType paramType = ParseType();
 
         Param param;
         param.name = paramName;
@@ -172,7 +189,16 @@ void Parser::ParseBody(NodeId funcId)
         }
         else if (Peek().type == TokenType::Id)
         {
-            if (Peek(1).type == TokenType::LParen)
+            if (Peek(1).type == TokenType::Assign)
+            {
+                // Assignment statement: id = expr;
+                Node assignNode = ParseAssignment();
+                NodeId assignId = arena.create(assignNode);
+                arena.get(funcId).body.push_back(assignId);
+                if (Peek().type == TokenType::Semi)
+                    Advance();
+            }
+            else if (Peek(1).type == TokenType::LParen)
             {
                 Node exprNode = ParseExpr();
                 NodeId exprId = arena.create(exprNode);
@@ -183,9 +209,36 @@ void Parser::ParseBody(NodeId funcId)
             }
             else
             {
-                AddError("Only function call expressions are supported as statements starting with identifier", Peek());
+                AddError("Only function call expressions and assignments are supported as statements starting with identifier", Peek());
                 Advance();
             }
+        }
+        else if (Peek().type == TokenType::Star)
+        {
+            // Dereference expression that might be an assignment: *x = expr;
+            Node lhs = ParseExpr();
+            if (Peek().type == TokenType::Assign)
+            {
+                Advance(); // consume =
+                Node rhs = ParseExpr();
+
+                Node assignNode;
+                assignNode.nodeType = NodeType::TAssign;
+                assignNode.exprKind = ExprType::ExprAssign;
+                assignNode.body.push_back(arena.create(lhs));
+                assignNode.body.push_back(arena.create(rhs));
+
+                NodeId assignId = arena.create(assignNode);
+                arena.get(funcId).body.push_back(assignId);
+            }
+            else
+            {
+                // Just an expression statement
+                NodeId exprId = arena.create(lhs);
+                arena.get(funcId).body.push_back(exprId);
+            }
+            if (Peek().type == TokenType::Semi)
+                Advance();
         }
         else if (Peek().type == TokenType::KLet)
         {
@@ -246,15 +299,7 @@ Node Parser::ParseLet()
 
     Consume(TokenType::Colon, "Expected ':' after variable name");
 
-    Token typeNameTok = Consume(TokenType::Id, "Expected type name");
-    std::string typeName = std::string(typeNameTok.value);
-
-    IgnType varType;
-    varType.isPtr = false;
-    varType.isStruct = false;
-    varType.isArray = false;
-    varType.isRef = false;
-    varType.base = stringToPrimType(typeName);
+    IgnType varType = ParseType();
 
     Node letNode;
     letNode.nodeType = NodeType::TLet;
@@ -275,7 +320,67 @@ Node Parser::ParseLet()
     return letNode;
 }
 
+Node Parser::ParseAssignment()
+{
+    Token varNameTok = Consume(TokenType::Id, "Expected variable name");
+    std::string varName = std::string(varNameTok.value);
+
+    Consume(TokenType::Assign, "Expected '='");
+
+    Node assignNode;
+    assignNode.nodeType = NodeType::TAssign;
+    assignNode.exprKind = ExprType::ExprAssign;
+    assignNode.funcName = varName; // Store variable name
+
+    // Parse the right-hand side expression
+    Node rhsExpr = ParseExpr();
+    NodeId exprId = arena.create(rhsExpr);
+    assignNode.body.push_back(exprId);
+
+    return assignNode;
+}
+
 Node Parser::ParseExpr()
+{
+    Node left = ParseTerm();
+    while (Peek().type == TokenType::Operator && (Peek().value == "+" || Peek().value == "-"))
+    {
+        Token op = Advance();
+        Node right = ParseTerm();
+        Node binNode;
+        binNode.nodeType = NodeType::TExpr;
+        binNode.exprKind = ExprType::ExprBinary;
+        binNode.op = std::string(op.value);
+        binNode.exprType.base = PrimType::PTI32;
+        binNode.body.push_back(arena.create(left));
+        binNode.body.push_back(arena.create(right));
+        left = binNode;
+    }
+    return left;
+}
+
+// ParseTerm obsługuje *, /, %
+Node Parser::ParseTerm()
+{
+    Node left = ParseFactor();
+    while (Peek().type == TokenType::Operator && (Peek().value == "*" || Peek().value == "/" || Peek().value == "%"))
+    {
+        Token op = Advance();
+        Node right = ParseFactor();
+        Node binNode;
+        binNode.nodeType = NodeType::TExpr;
+        binNode.exprKind = ExprType::ExprBinary;
+        binNode.op = std::string(op.value);
+        binNode.exprType.base = PrimType::PTI32;
+        binNode.body.push_back(arena.create(left));
+        binNode.body.push_back(arena.create(right));
+        left = binNode;
+    }
+    return left;
+}
+
+// ParseFactor obsługuje liczby, identyfikatory, wywołania funkcji, operatory jednoargumentowe
+Node Parser::ParseFactor()
 {
     Node exprNode;
     exprNode.nodeType = NodeType::TExpr;
@@ -285,6 +390,30 @@ Node Parser::ParseExpr()
     exprNode.exprType.isRef = false;
 
     Token current = Peek();
+
+    // Handle unary operators: & (address-of) and * (dereference)
+    if (current.type == TokenType::Ampersand)
+    {
+        Advance(); // consume &
+        Node operand = ParseFactor();
+        exprNode.exprKind = ExprType::ExprUnary;
+        exprNode.op = "&";
+        exprNode.body.push_back(arena.create(operand));
+        exprNode.exprType = operand.exprType;
+        exprNode.exprType.isRef = true;
+        return exprNode;
+    }
+    else if (current.type == TokenType::Star)
+    {
+        Advance(); // consume *
+        Node operand = ParseFactor();
+        exprNode.exprKind = ExprType::ExprUnary;
+        exprNode.op = "*";
+        exprNode.body.push_back(arena.create(operand));
+        exprNode.exprType = operand.exprType;
+        exprNode.exprType.isPtr = false; // dereferencing a pointer removes the pointer flag
+        return exprNode;
+    }
 
     switch (current.type)
     {
@@ -296,7 +425,6 @@ Node Parser::ParseExpr()
         exprNode.intValue = std::stoi(std::string(tok.value));
         break;
     }
-
     case TokenType::ConstString:
     {
         Token tok = Consume(TokenType::ConstString, "Expected string literal in expression");
@@ -308,21 +436,17 @@ Node Parser::ParseExpr()
     case TokenType::Id:
     {
         Token funcNameTok = Consume(TokenType::Id, "Expected identifier");
-
         if (Peek().type == TokenType::LParen)
         {
             exprNode.exprKind = ExprType::ExprFuncCall;
             exprNode.funcName = std::string(funcNameTok.value);
             exprNode.exprType.base = PrimType::PTI32; // Placeholder
-
             Consume(TokenType::LParen, "Expected '('");
-
             while (Peek().type != TokenType::RParen && !IsAtEnd())
             {
                 Node argNode = ParseExpr();
                 NodeId argId = arena.create(argNode);
                 exprNode.exprArgs.push_back(argId);
-
                 if (Peek().type == TokenType::Comma)
                 {
                     Advance();
@@ -332,26 +456,21 @@ Node Parser::ParseExpr()
                     break;
                 }
             }
-
             Consume(TokenType::RParen, "Expected ')' after function arguments");
         }
         else
         {
-            // Just an identifier (variable reference)
             exprNode.exprKind = ExprType::ExprInt;
             exprNode.funcName = std::string(funcNameTok.value);
             exprNode.exprType.base = PrimType::PTI32; // TODO: Look up actual type
         }
-
         break;
     }
-
     default:
         AddError("Unsupported expression starting with token: " + std::string(current.value), current);
         Advance();
         break;
     }
-
     return exprNode;
 }
 

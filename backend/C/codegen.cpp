@@ -59,6 +59,9 @@ namespace ignis
                 case TLet:
 
                     break;
+                case TAssign:
+                    emitAssignment(node, arena);
+                    break;
                 case TRet:
                     emitReturnStatement(node, arena);
                     break;
@@ -121,8 +124,13 @@ namespace ignis
                         {
                             emitVariableDeclaration(child, arena);
                         }
+                        else if (child.nodeType == TAssign)
+                        {
+                            emitAssignment(child, arena);
+                        }
                         else if (child.nodeType == TExpr)
                         {
+                            code << "    ";
                             emitExpression(child, arena);
                             code << ";\n";
                         }
@@ -139,6 +147,35 @@ namespace ignis
                 {
                     code << " = ";
                     emitExpression(arena.get(letNode.body[0]), arena);
+                }
+
+                code << ";\n";
+            }
+
+            void CodeGen::emitAssignment(const Node &assignNode, const NodeArena &arena)
+            {
+                code << "    ";
+
+                // Emit LHS - either from funcName (simple id) or from body[0] (complex expr)
+                if (!assignNode.funcName.empty())
+                {
+                    code << assignNode.funcName;
+                }
+                else if (assignNode.body.size() > 0 && assignNode.body[0] < arena.size())
+                {
+                    emitExpression(arena.get(assignNode.body[0]), arena);
+                }
+
+                code << " = ";
+
+                // Emit RHS
+                if (assignNode.body.size() > 1 && assignNode.body[1] < arena.size())
+                {
+                    emitExpression(arena.get(assignNode.body[1]), arena);
+                }
+                else if (assignNode.body.size() > 0 && assignNode.body[0] < arena.size() && assignNode.funcName.empty())
+                {
+                    emitValue(assignNode, arena);
                 }
 
                 code << ";\n";
@@ -186,8 +223,29 @@ namespace ignis
 
             void CodeGen::emitExpression(const Node &exprNode, const NodeArena &arena)
             {
+                // Handle unary operations
+                if (exprNode.exprKind == ExprUnary)
+                {
+                    if (exprNode.body.size() >= 1)
+                    {
+                        code << exprNode.op;
+                        emitExpression(arena.get(exprNode.body[0]), arena);
+                    }
+                }
+                // Handle binary operations
+                else if (exprNode.exprKind == ExprBinary)
+                {
+                    if (exprNode.body.size() >= 2)
+                    {
+                        code << "(";
+                        emitExpression(arena.get(exprNode.body[0]), arena);
+                        code << " " << exprNode.op << " ";
+                        emitExpression(arena.get(exprNode.body[1]), arena);
+                        code << ")";
+                    }
+                }
                 // Handle function calls
-                if (exprNode.exprKind == ExprFuncCall)
+                else if (exprNode.exprKind == ExprFuncCall)
                 {
                     code << exprNode.funcName << "(";
                     for (size_t i = 0; i < exprNode.exprArgs.size(); ++i)
@@ -202,7 +260,6 @@ namespace ignis
                     }
                     code << ")";
                 }
-
                 else if (!exprNode.funcName.empty() && exprNode.exprKind != ExprFuncCall)
                 {
                     code << exprNode.funcName;
@@ -222,8 +279,8 @@ namespace ignis
                     result += "*";
                 if (type.isArray)
                     result += "[]";
-                if (type.isRef)
-                    result += "&";
+                // Note: C doesn't have references like C++, so we skip isRef for now
+                // In production, might want to use pointers instead
 
                 return result;
             }

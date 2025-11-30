@@ -37,11 +37,15 @@ public:
     Token Consume(TokenType expectedType, std::string errMsg);
     Node ParseStatement();
     Node ParseFunction();
+    IgnType ParseType();
     std::vector<Param> ParseParams();
     void ParseBody(NodeId funcId);
     Node ParseReturn();
     Node ParseLet();
+    Node ParseAssignment();
     Node ParseExpr();
+    Node ParseTerm();
+    Node ParseFactor();
     void AddError(const std::string &msg, const Token &tok);
     void ReportErrors(const std::string &filePath = "");
     void Synchronize(TokenType expectedType);
