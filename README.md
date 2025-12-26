@@ -1,4 +1,4 @@
-# Zap Programming Language
+<h1 align="center"> Zap Programming Language </h1>
 
 <p align="center">
   <img src="art/Logo.svg" alt="Zap Logo" width="275" />
