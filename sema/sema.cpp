@@ -9,6 +9,12 @@ void SymbolTable::addFunction(FunctionSymbol &&func)
 {
     functions_.emplace(func.name, std::make_shared<FunctionSymbol>(std::move(func)));
 }
+
+void SymbolTable::addVariable(VariableSymbol &&var, Scope &scope)
+{
+    scope.variables.emplace(var.name, std::move(var));
+}
+
 std::shared_ptr<FunctionSymbol> SymbolTable::getFunction(const std::string &name)
 {
     auto it = functions_.find(name);

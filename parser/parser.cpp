@@ -35,6 +35,7 @@ std::unique_ptr<RootNode> Parser::parse(std::vector<Token> toks)
 }
 std::unique_ptr<FunDecl> Parser::parseFun()
 {
+    std::unique_ptr<zap::sema::Scope> scope = std::make_unique<zap::sema::Scope>();
     auto func = std::make_unique<FunDecl>();
     if (peek().type == TokenType::EXTERN)
     {
@@ -74,15 +75,19 @@ std::unique_ptr<FunDecl> Parser::parseFun()
 
         return func;
     }
-    func->body_ = parseBody();
+    func->body_ = parseBody(*scope);
     if (symTable_->getFunction(func->name_))
     {
         printf("Function %s already declared.\n", func->name_.c_str());
         exit(-1);
     }
+
+    // Store scope in FunDecl before moving to SymbolTable
+    func->scope_ = std::make_unique<zap::sema::Scope>(*scope);
+
     symTable_->addFunction(zap::sema::FunctionSymbol{
         func->name_, func->isExtern_, func->isStatic_,
-        func->isPublic_});
+        func->isPublic_, std::move(*scope)});
     if (func->name_ == "main")
     {
         symTable_->found_main = true;
@@ -90,7 +95,7 @@ std::unique_ptr<FunDecl> Parser::parseFun()
     return func;
 }
 
-std::unique_ptr<VarDecl> Parser::parseVarDecl()
+std::unique_ptr<VarDecl> Parser::parseVarDecl(zap::sema::Scope &scope)
 {
     /*
         let name = <expr>;
@@ -110,11 +115,13 @@ std::unique_ptr<VarDecl> Parser::parseVarDecl()
             // consume '='
             auto expr = parseExpression();
             consume(TokenType::SEMICOLON, "Expected ';' after variable declaration.");
+            symTable_->addVariable(zap::sema::VariableSymbol{id, type->typeName, nullptr}, scope);
             return std::make_unique<VarDecl>(id, std::move(type), std::move(expr));
         }
         else
         {
             consume(TokenType::SEMICOLON, "Expected ';' after variable declaration.");
+            symTable_->addVariable(zap::sema::VariableSymbol{id, type->typeName, nullptr}, scope);
             return std::make_unique<VarDecl>(id, std::move(type), nullptr);
         }
     }
@@ -123,6 +130,8 @@ std::unique_ptr<VarDecl> Parser::parseVarDecl()
         consume(TokenType::ASSIGN, "Expected '=' after variable name.");
         auto expr = parseExpression();
         consume(TokenType::SEMICOLON, "Expected ';' after variable declaration.");
+        // it wont work now!!!
+        symTable_->addVariable(zap::sema::VariableSymbol{id, "inferred", nullptr}, scope);
         return std::make_unique<VarDecl>(id, nullptr, std::move(expr));
     }
 }
@@ -268,23 +277,23 @@ std::unique_ptr<ExpressionNode> Parser::parsePrimary()
     }
 }
 
-std::unique_ptr<BodyNode> Parser::parseBody()
+std::unique_ptr<BodyNode> Parser::parseBody(zap::sema::Scope &scope)
 {
     auto body = std::make_unique<BodyNode>();
     consume(TokenType::LBRACE);
     while (!isAtEnd() && peek().type != TokenType::RBRACE)
     {
-        body->addStatement(parseStatement());
+        body->addStatement(parseStatement(scope));
     }
     consume(TokenType::RBRACE, "Expected '}' when funtion ends.");
     return body;
 }
 
-std::unique_ptr<StatementNode> Parser::parseStatement()
+std::unique_ptr<StatementNode> Parser::parseStatement(zap::sema::Scope &scope)
 {
     if (peek().type == TokenType::LET)
     {
-        return parseVarDecl();
+        return parseVarDecl(scope);
     }
     else if (peek().type == TokenType::RETURN)
     {

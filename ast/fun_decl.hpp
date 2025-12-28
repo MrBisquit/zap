@@ -4,11 +4,13 @@
 #include "parameter_node.hpp"
 #include "top_level.hpp"
 #include "type_node.hpp"
+#include "../sema/sema.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>
 
-class FunDecl : public TopLevel {
+class FunDecl : public TopLevel
+{
 public:
   std::string name_;
   std::vector<std::unique_ptr<TypeNode>> genericParams_;
@@ -16,6 +18,7 @@ public:
   std::unique_ptr<TypeNode> returnType_;
   std::unique_ptr<BodyNode> body_;
   std::unique_ptr<ExpressionNode> lambdaExpr_;
+  std::unique_ptr<zap::sema::Scope> scope_;
   bool isExtern_ = false;
   bool isStatic_ = false;
   bool isPublic_ = false;

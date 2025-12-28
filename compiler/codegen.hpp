@@ -14,14 +14,15 @@ namespace zap
     {
 
     public:
-        Compiler(std::shared_ptr<sema::SymbolTable> symTable) : symTable_(symTable) {}
+        Compiler(std::shared_ptr<sema::SymbolTable> symTable) : symTable_(symTable), currentScope_(nullptr) {}
         llvm::LLVMContext context_;
         llvm::Module module_{"zap_module", context_};
         llvm::IRBuilder<> builder_{context_};
         std::shared_ptr<sema::SymbolTable> symTable_;
+        zap::sema::Scope *currentScope_;
         void compile(const std::unique_ptr<RootNode> &root);
         void generateFunction(const FunDecl &funDecl);
-        void generateBody(const BodyNode &body);
+        void generateBody(const BodyNode &body, zap::sema::Scope *scope);
         void generateReturn(const ReturnNode &retNode);
         void generateLet(const VarDecl &varDecl);
         llvm::Value *generateExpression(const ExpressionNode &expr);

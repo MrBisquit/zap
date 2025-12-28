@@ -7,6 +7,7 @@
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Type.h"
 #include "llvm/Support/raw_ostream.h"
+#include "ast/const/const_id.hpp"
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
@@ -47,17 +48,22 @@ void zap::Compiler::generateFunction(const FunDecl &funDecl)
         llvm::BasicBlock::Create(context_, "entry", function);
     builder_.SetInsertPoint(entry);
 
+    currentScope_ = const_cast<zap::sema::Scope *>(funDecl.scope_.get());
+
     if (funDecl.body_)
     {
-        generateBody(*funDecl.body_);
+        generateBody(*funDecl.body_, funDecl.scope_.get());
     }
     else if (funDecl.isExtern_)
     {
         return;
     }
+
+    // Reset scope
+    currentScope_ = nullptr;
 }
 
-void zap::Compiler::generateBody(const BodyNode &body)
+void zap::Compiler::generateBody(const BodyNode &body, zap::sema::Scope *scope)
 {
     for (const auto &stmt : body.statements)
     {
@@ -84,7 +90,18 @@ void zap::Compiler::generateLet(const VarDecl &varDecl)
     {
         initValue = llvm::Constant::getNullValue(mapType(*varDecl.type_));
     }
+
     builder_.CreateStore(initValue, var);
+
+    // Update the allocator in the scope
+    if (currentScope_)
+    {
+        auto it = currentScope_->variables.find(varDecl.name_);
+        if (it != currentScope_->variables.end())
+        {
+            it->second.allocator = var;
+        }
+    }
 }
 
 void zap::Compiler::generateReturn(const ReturnNode &retNode)
@@ -108,6 +125,24 @@ llvm::Value *zap::Compiler::generateExpression(const ExpressionNode &expr)
         llvm::Value *value = llvm::ConstantInt::get(
             llvm::Type::getInt32Ty(context_), constInt->value_);
         return value;
+    }
+    else if (auto *constId = dynamic_cast<const ConstId *>(&expr))
+    {
+        // Look up the variable in current scope
+        if (currentScope_)
+        {
+            auto it = currentScope_->variables.find(constId->value_);
+            if (it != currentScope_->variables.end() && it->second.allocator)
+            {
+                // Load the value from the allocated memory
+                return builder_.CreateLoad(
+                    mapType(TypeNode(it->second.type)),
+                    it->second.allocator,
+                    constId->value_);
+            }
+        }
+        std::cerr << "Variable '" << constId->value_ << "' not found in scope" << std::endl;
+        return nullptr;
     }
     else if (auto *binExpr = dynamic_cast<const BinExpr *>(&expr))
     {
