@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.31.6)
-project(Zap)
+project(zapc)
 
 # C++ Standard
 set(CMAKE_CXX_STANDARD 17)
@@ -57,8 +57,9 @@ set(HEADERS
 )
 
 # Create executable
-add_executable(Zap ${SOURCES} ${HEADERS})
+add_executable(zapc ${SOURCES} ${HEADERS})
 
 # Link against LLVM libraries
 llvm_map_components_to_libnames(llvm_libs core)
-target_link_libraries(Zap PRIVATE ${llvm_libs})
+target_link_libraries(zapc PRIVATE ${llvm_libs})
+    # 

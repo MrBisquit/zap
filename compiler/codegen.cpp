@@ -14,8 +14,44 @@
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
+
+void zap::Compiler::addCommonFunctions()
+{
+    // Add puts function declaration (from C standard library)
+    llvm::Type *i8ptr = llvm::Type::getInt8Ty(context_)->getPointerTo();
+    llvm::FunctionType *putsFuncType = llvm::FunctionType::get(
+        llvm::Type::getInt32Ty(context_), {i8ptr}, false);
+    llvm::Function::Create(putsFuncType, llvm::Function::ExternalLinkage, "puts", &module_);
+
+    llvm::FunctionType *printlnFuncType = llvm::FunctionType::get(
+        llvm::Type::getVoidTy(context_), {i8ptr}, false);
+    llvm::Function *printlnFunc = llvm::Function::Create(
+        printlnFuncType, llvm::Function::InternalLinkage, "println", &module_);
+
+    llvm::BasicBlock *printlnEntry = llvm::BasicBlock::Create(context_, "entry", printlnFunc);
+    llvm::IRBuilder<> builder(printlnEntry);
+
+    llvm::Function *putsFunc = module_.getFunction("puts");
+
+    auto argsIt = printlnFunc->arg_begin();
+    builder.CreateCall(putsFunc, {&*argsIt});
+    builder.CreateRetVoid();
+
+    // Add println to symbol table
+    zap::sema::FunctionSymbol printlnSymbol{
+        "println",
+        false, // isExtern
+        false, // isStatic
+        true,  // isPublic
+        zap::sema::Scope()};
+    symTable_->addFunction(std::move(printlnSymbol));
+}
+
 void zap::Compiler::compile(const std::unique_ptr<RootNode, std::default_delete<RootNode>> &root)
 {
+
+    addCommonFunctions();
+
     for (const auto &child : root->children)
     {
         if (auto *funDecl = dynamic_cast<FunDecl *>(child.get()))
@@ -81,6 +117,11 @@ void zap::Compiler::generateBody(const BodyNode &body, zap::sema::Scope *scope)
         else if (auto *assignNode = dynamic_cast<AssignNode *>(stmt.get()))
         {
             generateAssign(*assignNode);
+        }
+        else if (auto *funCall = dynamic_cast<FunCall *>(stmt.get()))
+        {
+
+            generateExpression(*funCall);
         }
     }
 }
@@ -250,12 +291,28 @@ llvm::Value *zap::Compiler::generateExpression(const ExpressionNode &expr)
     }
     else if (auto *funCall = dynamic_cast<const FunCall *>(&expr))
     {
-
+        // Look up the function in the symbol table
         auto funcSymbol = symTable_->getFunction(funCall->funcName_);
         if (!funcSymbol)
         {
-            std::cerr << "Function '" << funCall->funcName_ << "' not found" << std::endl;
-            return nullptr;
+            // Try to get from module directly (for built-in functions)
+            llvm::Function *callee = module_.getFunction(funCall->funcName_);
+            if (!callee)
+            {
+                std::cerr << "Function '" << funCall->funcName_ << "' not found" << std::endl;
+                return nullptr;
+            }
+
+            std::vector<llvm::Value *> args;
+            for (const auto &param : funCall->params_)
+            {
+                llvm::Value *argValue = generateExpression(*param);
+                if (!argValue)
+                    return nullptr;
+                args.push_back(argValue);
+            }
+
+            return builder_.CreateCall(callee, args);
         }
 
         std::vector<llvm::Value *> args;
@@ -267,7 +324,6 @@ llvm::Value *zap::Compiler::generateExpression(const ExpressionNode &expr)
             args.push_back(argValue);
         }
 
-        // Get the LLVM function
         llvm::Function *callee = module_.getFunction(funCall->funcName_);
         if (!callee)
         {

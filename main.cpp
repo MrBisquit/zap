@@ -34,6 +34,16 @@ int main(int argc, char *argv[])
     Lexer lex;
     auto toks = lex.tokenize(fileContent);
     auto symTable = std::make_shared<sema::SymbolTable>();
+
+    // Add built-in functions to symbol table before parsing
+    zap::sema::FunctionSymbol printlnSymbol{
+        "println",
+        false, // isExtern
+        false, // isStatic
+        true,  // isPublic
+        zap::sema::Scope()};
+    symTable->addFunction(std::move(printlnSymbol));
+
     Parser parser(symTable);
     if (LEXER_DEBUG)
     {
