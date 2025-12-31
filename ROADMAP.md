@@ -15,7 +15,7 @@ This document tracks the planned development of the Zap programming language.
 - [x] strings in expressions
 - [x] function calls
 - [x] if/else stmt
-- [ ] loops (loop, while, for)
+- [ ] loops (loop, while[x], for)
 - [ ] pointers & references
 - [ ] ext stmt (external functions)
 - [ ] arrays
