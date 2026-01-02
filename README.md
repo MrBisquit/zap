@@ -14,6 +14,8 @@
 
 ---
 
+[Discord](https://discord.gg/cVGqffBA6m)
+
 ## What is Zap?
 
 **Zap** is a modern, high-level systems programming language compiled to native code (**LLVM backend**), with **garbage collection** and a **lightweight concurrency model**.
@@ -79,7 +81,7 @@ Zap intentionally keeps Go’s concurrency model (lightweight threads, channels,
 
 ## Contributing
 
-Zap is at an early stage — **feedback directly shapes the language**.
+Zap is at an early stage **feedback directly shapes the language**.
 
 You can help by:
 
