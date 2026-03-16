@@ -121,7 +121,7 @@ public:
     switch (type) {
     default:
       [[fallthrough]];
-    case output_type::EXEC:
+    case output_type::EXEC: // This should depend on the target set, not host.
 #ifdef _WIN32
       return ".exe";
 #else
@@ -172,10 +172,8 @@ private:
   bool implicit_output;          ///< Was the output implicit or explicit.
   bool inc_stdlib;               ///< Include the zap stdlib.o or not.
 
-  ///
   /// @brief Used internally by the compile() function.
   /// @return True if an error has occured.
-  ///
   bool compileSourceFile(const std::string &source,
                          const std::string &source_name);
 };

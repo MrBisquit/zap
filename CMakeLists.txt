@@ -41,8 +41,14 @@ set(LLVM_COMPONENTS
     passes
 )
 
-# Re-find LLVM with components
-llvm_map_components_to_libnames(llvm_libs ${LLVM_COMPONENTS})
+# Some distros (e.g. Arch Linux) provide llvm as one shared library rather than multiple ones.
+if(LLVM_LINK_LLVM_DYLIB)
+    # Single
+    set(llvm_libs LLVM)
+else()
+    # Multiple
+    llvm_map_components_to_libnames(llvm_libs ${LLVM_COMPONENTS})
+endif()
 
 target_link_libraries(zapc PRIVATE ${llvm_libs})
 target_compile_definitions(zapc PRIVATE ${LLVM_DEFINITIONS})

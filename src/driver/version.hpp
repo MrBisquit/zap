@@ -5,9 +5,7 @@
 #include <ostream>
 
 namespace zap {
-///
 /// @brief Base class for the version.
-///
 template <typename T> class _version_base {
 private:
   T maj;   ///< Major version. X.y.z
@@ -33,8 +31,6 @@ public:
   }
 };
 
-///
 /// @brief Can be changed to any integer or float type.
-///
 using version = _version_base<uint16_t>;
 } // namespace zap
