@@ -6,10 +6,10 @@
 
 ## Phase 1 — Type System Foundation
 
-- [ ] Primitive integer types — `Int8`, `Int16`, `Int32`, `Int64`, `UInt8`, `UInt16`, `UInt32`, `UInt64`
-- [ ] Type inference for integer literals
+- [x] Primitive integer types — `Int8`, `Int16`, `Int32`, `Int64`, `UInt8`, `UInt16`, `UInt32`, `UInt64`
+- [x] Type inference for integer literals
 - [ ] Float types — `Float32`, `Float64`
-- [ ] `Bool`, `Char`, `Byte`
+- [x] `Bool`, `Char`, `Byte`
 - [ ] Type aliases
 
 ---
