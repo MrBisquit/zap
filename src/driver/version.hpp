@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <llvm/Support/raw_ostream.h>
+#include "utils/stream.hpp"
 #include <ostream>
 
 namespace zap {
@@ -25,8 +25,7 @@ public:
     return os << v.get_major() << '.' << v.get_minor() << '.' << v.get_patch();
   }
 
-  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
-                                       const _version_base &v) {
+  friend Stream &operator<<(Stream &os, const _version_base &v) {
     return os << v.get_major() << '.' << v.get_minor() << '.' << v.get_patch();
   }
 };

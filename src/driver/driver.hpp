@@ -1,5 +1,6 @@
 #pragma once
 
+#include "utils/stream.hpp"
 #include <filesystem>
 #include <string>
 #include <vector>
@@ -158,6 +159,20 @@ public:
       return false;
     }
     return false;
+  }
+
+  template <typename... Args> static void reportError(Args &&...args) {
+    ((err() << "zapc: ").changeColor(Color::RED, true) << "error: ")
+        .resetColor();
+    (err() << ... << args);
+    err() << '\n';
+  }
+
+  template <typename... Args> static void reportWarning(Args &&...args) {
+    ((err() << "zapc: ").changeColor(Color::YELLOW, true) << "warning: ")
+        .resetColor();
+    (err() << ... << args);
+    err() << '\n';
   }
 
 private:

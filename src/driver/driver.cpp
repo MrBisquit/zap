@@ -7,6 +7,7 @@
 #include "sema/binder.hpp"
 #include "sema/bound_nodes.hpp"
 #include "utils/diagnostics.hpp"
+#include "utils/stream.hpp"
 #include <algorithm>
 #include <cerrno>
 #include <cstring>
@@ -17,11 +18,6 @@
 namespace zap {
 
 driver::driver() {}
-
-void print_red(std::string_view msg) {
-  // Simple ANSI colors
-  std::cerr << "\033[1;31m" << msg << "\033[0m";
-}
 
 bool driver::parseArgs(int argc, char **argv) {
   std::vector<std::string_view> args;
@@ -41,28 +37,28 @@ bool driver::parseArgs(int argc, char **argv) {
     auto arg = args[i];
 
     if (arg == "--help") {
-      std::cout << "Zap Compiler [options] <file>\n"
-                << "Zap Compiler\n\n"
-                << "Options:\n"
-                << "  --help          Display available options\n"
-                << "  --version       Print version information\n"
-                << "  -o <file>       Write output to <file>\n"
-                << "  -nostdlib       Stops the linker from linking the zap stdlib\n"
-                << "  -c              Compile and assemble but not link\n"
-                << "  -S              Compile only no assembling or linking\n"
-                << "  -emit-llvm      Emit LLVM IR instead of final output\n"
-                << "  -emit-zir       Emit ZIR instead of final output\n";
+      out()
+          << "Zap Compiler [options] <file>\n"
+          << "Zap Compiler\n\n"
+          << "Options:\n"
+          << "  --help          Display available options\n"
+          << "  --version       Print version information\n"
+          << "  -o <file>       Write output to <file>\n"
+          << "  -nostdlib       Stops the linker from linking the zap stdlib\n"
+          << "  -c              Compile and assemble but not link\n"
+          << "  -S              Compile only no assembling or linking\n"
+          << "  -emit-llvm      Emit LLVM IR instead of final output\n"
+          << "  -emit-zir       Emit ZIR instead of final output\n";
       return false;
     } else if (arg == "--version") {
-      std::cout << "Zap Compiler v" << zap::ZAP_VERSION << '\n';
+      out() << "Zap Compiler v" << zap::ZAP_VERSION << '\n';
       return false;
     } else if (arg == "-o") {
       if (i + 1 < args.size()) {
         output_str = args[++i];
         implicit_output = false;
       } else {
-        print_red("error: ");
-        std::cerr << "argument to '-o' is missing\n";
+        reportError("argument to '-o' is missing");
         return false;
       }
     } else if (arg.substr(0, 2) == "-o") {
@@ -79,8 +75,7 @@ bool driver::parseArgs(int argc, char **argv) {
     } else if (arg == "-emit-zir") {
       emit_zir = true;
     } else if (arg.substr(0, 1) == "-") {
-      print_red("error: ");
-      std::cerr << "unknown argument: " << arg << "\n";
+      reportError("unknown argument: ", arg);
       return false;
     } else {
       inputs.emplace_back(std::string(arg));
@@ -88,8 +83,7 @@ bool driver::parseArgs(int argc, char **argv) {
   }
 
   if (emit_llvm && emit_zir) {
-    print_red("error: ");
-    std::cerr << "choosing multiple emit modes isn't allowed\n";
+    reportError("choosing multiple emit modes isn't allowed");
     return false;
   }
 
@@ -116,9 +110,7 @@ bool driver::parseArgs(int argc, char **argv) {
     return true;
   }
 
-  std::cerr << "zapc: ";
-  print_red("error: ");
-  std::cerr << "no input files\n";
+  reportError("no input files");
   return false;
 }
 
@@ -133,8 +125,7 @@ bool driver::splitInputs() {
     } else if (ext == ".a" || ext == ".o") {
       objects.emplace_back(std::move(input_path));
     } else {
-      print_red("error: ");
-      std::cerr << "unknown input type: " << input << '\n';
+      reportError("unknown input type: ", input);
       return true;
     }
   }
@@ -148,22 +139,18 @@ bool driver::verifyOutput() {
   bool per_file_emit = (emit_type != output_type::EXEC);
 
   if (per_file_emit && get_inputs().size() > 1 && !is_implicit_output()) {
-    print_red("error: ");
-    std::cerr << "cannot specify -o with multiple input files\n";
+    reportError("cannot specify -o with multiple input files");
     return true;
   }
 
   if (per_file_emit && !objects.empty()) {
-    print_red("error: ");
-    std::cerr << "cannot use object files or archives with the selected "
-                    "output mode\n";
+    reportError(
+        "cannot use object files or archives with the selected output mode");
     return true;
   }
 
   if (!format_supported()) {
-    print_red("error: ");
-    std::cerr
-        << "chosen file output mode is not yet supported in this version\n";
+    reportError("chosen file output mode is not yet supported in this version");
     return true;
   }
 
@@ -172,12 +159,10 @@ bool driver::verifyOutput() {
 
 bool verifyFile(const std::filesystem::path &input) {
   if (!std::filesystem::exists(input)) {
-    print_red("error: ");
-    std::cerr << "provided file doesn't exist: " << input << '\n';
+    driver::reportError("provided file doesn't exist: ", input);
     return true;
   } else if (!std::filesystem::is_regular_file(input)) {
-    print_red("error: ");
-    std::cerr << "provided file isn't a regular file: " << input << '\n';
+    driver::reportError("provided file isn't a regular file: ", input);
     return true;
   }
   return false;
@@ -201,8 +186,7 @@ bool compileSourceZIR(sema::BoundRootNode &node, std::ostream &ofoutput) {
   if (mod) {
     ofoutput << mod->toString();
   } else {
-    print_red("error: ");
-    std::cerr << "failed to generate ZIR\n";
+    driver::reportError("failed to generate ZIR");
     return true;
   }
   return false;
@@ -223,8 +207,7 @@ bool driver::compileSourceFile(const std::string &source,
   }
 
   if (!ast) {
-    print_red("error: ");
-    std::cerr << source_name << ": " << "failed parsing the provided file\n";
+    reportError(source_name, ": failed parsing the provided file");
     return true;
   }
 
@@ -232,8 +215,7 @@ bool driver::compileSourceFile(const std::string &source,
   auto boundAst = binder.bind(*ast);
 
   if (!boundAst) {
-    print_red("error: ");
-    std::cerr << source_name << ": " << "semantic analysis failed\n";
+    reportError(source_name, ": semantic analysis failed");
     return true;
   }
 
@@ -258,8 +240,7 @@ bool driver::compileSourceFile(const std::string &source,
     llvmGen.generate(*boundAst);
 
     if (!llvmGen.emitObjectFile(out_path.string())) {
-      print_red("error: ");
-      std::cerr << "object file emission failed\n";
+      reportError("object file emission failed");
       return true;
     }
 
@@ -273,9 +254,8 @@ bool driver::compileSourceFile(const std::string &source,
     std::ofstream ofoutput(out_path, std::ios::binary);
 
     if (!ofoutput) {
-      print_red("error: ");
-      std::cerr << "couldn't open the provided file: " << out_path << '\n';
-      std::cerr << "reason: " << strerror(errno) << '\n';
+      reportError("couldn't open the provided file: ", out_path,
+                  "\nreason: ", strerror(errno));
       return true;
     }
 
@@ -304,9 +284,8 @@ bool driver::compile() {
   for (const std::filesystem::path &input : sources) {
     std::ifstream file(input, std::ios::binary | std::ios::ate);
     if (!file) {
-      print_red("error: ");
-      std::cerr << "couldn't open the provided file: " << input << '\n';
-      std::cerr << "reason: " << strerror(errno) << '\n';
+      reportError("couldn't open the provided file: ", input,
+                  "\nreason: ", strerror(errno));
       return true;
     }
 
@@ -314,7 +293,7 @@ bool driver::compile() {
     std::string content(size, '\0');
 
     if (size == 0) {
-      std::cerr << "warning: provided file is empty: " << input << '\n';
+      err() << "warning: provided file is empty: " << input << '\n';
     } else {
       file.seekg(0);
       file.read(content.data(), size);
@@ -349,8 +328,7 @@ bool driver::link() {
 
   int res = std::system(cmd.c_str());
   if (res != 0) {
-    print_red("error: ");
-    std::cerr << "linking failed with exit code: " << res << '\n';
+    reportError("linking failed with exit code: ", res);
     return true;
   }
 
@@ -365,8 +343,7 @@ bool driver::cleanup() {
     std::filesystem::remove(f, ec);
     if (ec) {
       errs = true;
-      std::cerr << "warning: failed to remove: " << f
-                   << "\nreason: " << ec.message() << '\n';
+      reportWarning("failed to remove: ", f, "\nreason: ", ec.message());
     }
   }
 

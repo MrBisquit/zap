@@ -16,6 +16,7 @@ set(SOURCES
     src/sema/binder.cpp
     src/codegen/llvm_codegen.cpp
     src/driver/driver.cpp
+    src/utils/stream.cpp
 )
 
 add_executable(zapc ${SOURCES})
