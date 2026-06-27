@@ -72,7 +72,8 @@ $(function(){initNavTree('d0/df9/classsema_1_1BoundVisitor.html','../../','d4/db
  <div class="center">
   <img src="../../d0/df9/classsema_1_1BoundVisitor.png" usemap="#sema_3A_3ABoundVisitor_map" alt=""/>
   <map id="sema_3A_3ABoundVisitor_map" name="sema_3A_3ABoundVisitor_map">
-<area href="../../d4/da0/classzir_1_1BoundIRGenerator.html" alt="zir::BoundIRGenerator" shape="rect" coords="0,56,136,80"/>
+<area href="../../da/de9/classcodegen_1_1LLVMCodeGen.html" alt="codegen::LLVMCodeGen" shape="rect" coords="0,56,154,80"/>
+<area href="../../d4/da0/classzir_1_1BoundIRGenerator.html" alt="zir::BoundIRGenerator" shape="rect" coords="164,56,318,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -89,24 +90,40 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8020a0bde7549fb88670d4756d5f32ac" id="r_a8020a0bde7549fb88670d4756d5f32ac"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8020a0bde7549fb88670d4756d5f32ac">visit</a> (<a class="el" href="../../de/d88/classsema_1_1BoundExpressionStatement.html">BoundExpressionStatement</a> &amp;node)=0</td></tr>
 <tr class="memitem:accf2b4508edfaa54e740e372eb024849" id="r_accf2b4508edfaa54e740e372eb024849"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accf2b4508edfaa54e740e372eb024849">visit</a> (<a class="el" href="../../db/d85/classsema_1_1BoundLiteral.html">BoundLiteral</a> &amp;node)=0</td></tr>
 <tr class="memitem:a6765ed7798f94240222ec77a3285d7ab" id="r_a6765ed7798f94240222ec77a3285d7ab"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6765ed7798f94240222ec77a3285d7ab">visit</a> (<a class="el" href="../../dc/d46/classsema_1_1BoundVariableExpression.html">BoundVariableExpression</a> &amp;node)=0</td></tr>
+<tr class="memitem:a03aca89101a8f0ecf55923f93eab0806" id="r_a03aca89101a8f0ecf55923f93eab0806"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03aca89101a8f0ecf55923f93eab0806">visit</a> (<a class="el" href="../../db/d2f/classsema_1_1BoundCompoundTargetLoad.html">BoundCompoundTargetLoad</a> &amp;node)=0</td></tr>
 <tr class="memitem:a816b46a503eccfd311c3a767f1be69e1" id="r_a816b46a503eccfd311c3a767f1be69e1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a816b46a503eccfd311c3a767f1be69e1">visit</a> (<a class="el" href="../../df/dee/classsema_1_1BoundBinaryExpression.html">BoundBinaryExpression</a> &amp;node)=0</td></tr>
+<tr class="memitem:a1dba80fa0897fb7556de48f745cb8ee9" id="r_a1dba80fa0897fb7556de48f745cb8ee9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dba80fa0897fb7556de48f745cb8ee9">visit</a> (<a class="el" href="../../db/d94/classsema_1_1BoundTernaryExpression.html">BoundTernaryExpression</a> &amp;node)=0</td></tr>
 <tr class="memitem:a16b215bbf67151a2bd8ca2b6fbad5fc5" id="r_a16b215bbf67151a2bd8ca2b6fbad5fc5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16b215bbf67151a2bd8ca2b6fbad5fc5">visit</a> (<a class="el" href="../../d6/d6f/classsema_1_1BoundUnaryExpression.html">BoundUnaryExpression</a> &amp;node)=0</td></tr>
 <tr class="memitem:a989b3970c8adc9157d339b4046fbc2bc" id="r_a989b3970c8adc9157d339b4046fbc2bc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a989b3970c8adc9157d339b4046fbc2bc">visit</a> (<a class="el" href="../../df/da0/classsema_1_1BoundFunctionCall.html">BoundFunctionCall</a> &amp;node)=0</td></tr>
+<tr class="memitem:a8e2f7f8c7c2634c18c1ae1c9781123e3" id="r_a8e2f7f8c7c2634c18c1ae1c9781123e3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e2f7f8c7c2634c18c1ae1c9781123e3">visit</a> (<a class="el" href="../../de/d3e/classsema_1_1BoundIndirectCall.html">BoundIndirectCall</a> &amp;node)=0</td></tr>
+<tr class="memitem:aebd73f1b0760ddc102b781472d23baee" id="r_aebd73f1b0760ddc102b781472d23baee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebd73f1b0760ddc102b781472d23baee">visit</a> (<a class="el" href="../../da/d6b/classsema_1_1BoundFunctionReference.html">BoundFunctionReference</a> &amp;node)=0</td></tr>
 <tr class="memitem:a96dcf11c93801833feb6865c162d1f2c" id="r_a96dcf11c93801833feb6865c162d1f2c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96dcf11c93801833feb6865c162d1f2c">visit</a> (<a class="el" href="../../dd/d9c/classsema_1_1BoundArrayLiteral.html">BoundArrayLiteral</a> &amp;node)=0</td></tr>
 <tr class="memitem:a81ce17662aa044532e84ac5ae11bceed" id="r_a81ce17662aa044532e84ac5ae11bceed"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81ce17662aa044532e84ac5ae11bceed">visit</a> (<a class="el" href="../../d6/d5e/classsema_1_1BoundIndexAccess.html">BoundIndexAccess</a> &amp;node)=0</td></tr>
 <tr class="memitem:a4d7488ae662dfe59e00796d05109ac67" id="r_a4d7488ae662dfe59e00796d05109ac67"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d7488ae662dfe59e00796d05109ac67">visit</a> (<a class="el" href="../../d1/d8b/classsema_1_1BoundRecordDeclaration.html">BoundRecordDeclaration</a> &amp;node)=0</td></tr>
 <tr class="memitem:aae0cb17a39af3ccb9f6cb593ecf6c5ba" id="r_aae0cb17a39af3ccb9f6cb593ecf6c5ba"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae0cb17a39af3ccb9f6cb593ecf6c5ba">visit</a> (<a class="el" href="../../d2/d9e/classsema_1_1BoundEnumDeclaration.html">BoundEnumDeclaration</a> &amp;node)=0</td></tr>
+<tr class="memitem:aa590bc0cb7067a34096b1a285677b269" id="r_aa590bc0cb7067a34096b1a285677b269"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa590bc0cb7067a34096b1a285677b269">visit</a> (<a class="el" href="../../dc/da0/classsema_1_1BoundTaggedUnionDeclaration.html">BoundTaggedUnionDeclaration</a> &amp;node)=0</td></tr>
 <tr class="memitem:a58770adff643dede3a95430791aafa9b" id="r_a58770adff643dede3a95430791aafa9b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58770adff643dede3a95430791aafa9b">visit</a> (<a class="el" href="../../db/ddd/classsema_1_1BoundMemberAccess.html">BoundMemberAccess</a> &amp;node)=0</td></tr>
 <tr class="memitem:ae6ff71d51343bf6846594601e9531923" id="r_ae6ff71d51343bf6846594601e9531923"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6ff71d51343bf6846594601e9531923">visit</a> (<a class="el" href="../../d8/d4b/classsema_1_1BoundStructLiteral.html">BoundStructLiteral</a> &amp;node)=0</td></tr>
-<tr class="memitem:a88e48f2f8c4f7a1b7a9f71958e80081d" id="r_a88e48f2f8c4f7a1b7a9f71958e80081d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88e48f2f8c4f7a1b7a9f71958e80081d">visit</a> (<a class="el" href="../../d3/dc8/classsema_1_1BoundIfExpression.html">BoundIfExpression</a> &amp;node)=0</td></tr>
+<tr class="memitem:aecfff3e6bc695a6729e3575d526cbc81" id="r_aecfff3e6bc695a6729e3575d526cbc81"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aecfff3e6bc695a6729e3575d526cbc81">visit</a> (<a class="el" href="../../d5/da5/classsema_1_1BoundTaggedUnionLiteral.html">BoundTaggedUnionLiteral</a> &amp;node)=0</td></tr>
+<tr class="memitem:a4a9487156c524abc8a0834a0ce4605cb" id="r_a4a9487156c524abc8a0834a0ce4605cb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a9487156c524abc8a0834a0ce4605cb">visit</a> (<a class="el" href="../../d5/d03/classsema_1_1BoundModuleReference.html">BoundModuleReference</a> &amp;node)=0</td></tr>
+<tr class="memitem:a662bfdf3942fbcbfa51710a04437f85f" id="r_a662bfdf3942fbcbfa51710a04437f85f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a662bfdf3942fbcbfa51710a04437f85f">visit</a> (<a class="el" href="../../d0/dec/classsema_1_1BoundIfStatement.html">BoundIfStatement</a> &amp;node)=0</td></tr>
 <tr class="memitem:adcf84f4d87eec92029ed19831bd510af" id="r_adcf84f4d87eec92029ed19831bd510af"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adcf84f4d87eec92029ed19831bd510af">visit</a> (<a class="el" href="../../d3/d65/classsema_1_1BoundWhileStatement.html">BoundWhileStatement</a> &amp;node)=0</td></tr>
+<tr class="memitem:a2a313e65ef3002d8457b2d3969abcb4a" id="r_a2a313e65ef3002d8457b2d3969abcb4a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2a313e65ef3002d8457b2d3969abcb4a">visit</a> (<a class="el" href="../../db/dcc/classsema_1_1BoundForStatement.html">BoundForStatement</a> &amp;node)=0</td></tr>
 <tr class="memitem:ac711b54e3cb8b698593b35abe6d1531b" id="r_ac711b54e3cb8b698593b35abe6d1531b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac711b54e3cb8b698593b35abe6d1531b">visit</a> (<a class="el" href="../../d1/d54/classsema_1_1BoundBreakStatement.html">BoundBreakStatement</a> &amp;node)=0</td></tr>
 <tr class="memitem:a0087901bb9aed6255fbf6b86eb972458" id="r_a0087901bb9aed6255fbf6b86eb972458"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0087901bb9aed6255fbf6b86eb972458">visit</a> (<a class="el" href="../../d3/dc3/classsema_1_1BoundContinueStatement.html">BoundContinueStatement</a> &amp;node)=0</td></tr>
+<tr class="memitem:ad4189475ba1edaf9a5fa56fde97f5bef" id="r_ad4189475ba1edaf9a5fa56fde97f5bef"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4189475ba1edaf9a5fa56fde97f5bef">visit</a> (<a class="el" href="../../dc/d01/classsema_1_1BoundAsmStatement.html">BoundAsmStatement</a> &amp;node)=0</td></tr>
 <tr class="memitem:add26f26a369d5f10bfe8177c0b82fe45" id="r_add26f26a369d5f10bfe8177c0b82fe45"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#add26f26a369d5f10bfe8177c0b82fe45">visit</a> (<a class="el" href="../../d2/d0f/classsema_1_1BoundCast.html">BoundCast</a> &amp;node)=0</td></tr>
+<tr class="memitem:a8fc2aeb4b30e2f57d6561e152dd8e255" id="r_a8fc2aeb4b30e2f57d6561e152dd8e255"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8fc2aeb4b30e2f57d6561e152dd8e255">visit</a> (<a class="el" href="../../db/d54/classsema_1_1BoundNewExpression.html">BoundNewExpression</a> &amp;node)=0</td></tr>
+<tr class="memitem:abbea80235944587d2acf4bad7bc0095b" id="r_abbea80235944587d2acf4bad7bc0095b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbea80235944587d2acf4bad7bc0095b">visit</a> (<a class="el" href="../../d8/df0/classsema_1_1BoundWeakLockExpression.html">BoundWeakLockExpression</a> &amp;node)=0</td></tr>
+<tr class="memitem:ac21cb647c58e0a3a6ca0ecceb95cfabe" id="r_ac21cb647c58e0a3a6ca0ecceb95cfabe"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac21cb647c58e0a3a6ca0ecceb95cfabe">visit</a> (<a class="el" href="../../d2/d78/classsema_1_1BoundWeakAliveExpression.html">BoundWeakAliveExpression</a> &amp;node)=0</td></tr>
+<tr class="memitem:a4324ed37eb204ca9d40a4147328e3e9f" id="r_a4324ed37eb204ca9d40a4147328e3e9f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4324ed37eb204ca9d40a4147328e3e9f">visit</a> (<a class="el" href="../../d8/d57/classsema_1_1BoundTryExpression.html">BoundTryExpression</a> &amp;node)=0</td></tr>
+<tr class="memitem:a8976340af100418f49311bfe969d3315" id="r_a8976340af100418f49311bfe969d3315"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8976340af100418f49311bfe969d3315">visit</a> (<a class="el" href="../../d9/d37/classsema_1_1BoundFallbackExpression.html">BoundFallbackExpression</a> &amp;node)=0</td></tr>
+<tr class="memitem:aab0ae01ab9f6ab4003f7cef668ca8173" id="r_aab0ae01ab9f6ab4003f7cef668ca8173"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab0ae01ab9f6ab4003f7cef668ca8173">visit</a> (<a class="el" href="../../d5/d43/classsema_1_1BoundFailableHandleExpression.html">BoundFailableHandleExpression</a> &amp;node)=0</td></tr>
+<tr class="memitem:ad54bae84e9f570fa1ebf2e4aa0ff95dc" id="r_ad54bae84e9f570fa1ebf2e4aa0ff95dc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad54bae84e9f570fa1ebf2e4aa0ff95dc">visit</a> (<a class="el" href="../../d0/dd5/classsema_1_1BoundFailStatement.html">BoundFailStatement</a> &amp;node)=0</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00037">37</a> of file <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html">bound_nodes.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00052">52</a> of file <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html">bound_nodes.hpp</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a46756e333fc346e628bd92018ccad1aa" name="a46756e333fc346e628bd92018ccad1aa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46756e333fc346e628bd92018ccad1aa">&#9670;&#160;</a></span>~BoundVisitor()</h2>
@@ -135,7 +152,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a96dcf11c93801833feb6865c162d1f2c" name="a96dcf11c93801833feb6865c162d1f2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96dcf11c93801833feb6865c162d1f2c">&#9670;&#160;</a></span>visit() <span class="overload">[1/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a96dcf11c93801833feb6865c162d1f2c">&#9670;&#160;</a></span>visit() <span class="overload">[1/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,12 +174,39 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a191f154271fba1cede2d0e221092e63b">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#af59d6d6a1b35ecbad6efa1df4b7afb1a">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a191f154271fba1cede2d0e221092e63b">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="ad4189475ba1edaf9a5fa56fde97f5bef" name="ad4189475ba1edaf9a5fa56fde97f5bef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4189475ba1edaf9a5fa56fde97f5bef">&#9670;&#160;</a></span>visit() <span class="overload">[2/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dc/d01/classsema_1_1BoundAsmStatement.html">BoundAsmStatement</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a0849f7418f27f16b969bec06be554f08">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a617452582f0d50a325b6568036959f01">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="acf62a2c599d53da8e40fd1e84168cfe1" name="acf62a2c599d53da8e40fd1e84168cfe1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf62a2c599d53da8e40fd1e84168cfe1">&#9670;&#160;</a></span>visit() <span class="overload">[2/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acf62a2c599d53da8e40fd1e84168cfe1">&#9670;&#160;</a></span>visit() <span class="overload">[3/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -184,12 +228,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a3a7a540227e0d1fcbebdc0a1b470dff6">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#ab8c52cdb68317e7f2da81d2d2038e55b">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a3a7a540227e0d1fcbebdc0a1b470dff6">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a816b46a503eccfd311c3a767f1be69e1" name="a816b46a503eccfd311c3a767f1be69e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a816b46a503eccfd311c3a767f1be69e1">&#9670;&#160;</a></span>visit() <span class="overload">[3/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a816b46a503eccfd311c3a767f1be69e1">&#9670;&#160;</a></span>visit() <span class="overload">[4/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -211,12 +255,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ae45ae55e934f864c661caa2339bcfcd4">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a0f0e9aa3d8ba541cc44f9e331eb0c6bf">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ae45ae55e934f864c661caa2339bcfcd4">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a6658a9c1cea488b02e463e5cadb03fb6" name="a6658a9c1cea488b02e463e5cadb03fb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6658a9c1cea488b02e463e5cadb03fb6">&#9670;&#160;</a></span>visit() <span class="overload">[4/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6658a9c1cea488b02e463e5cadb03fb6">&#9670;&#160;</a></span>visit() <span class="overload">[5/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,12 +282,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a28a32dc4d57b74b9c3e4dfa5124f41e1">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a643e2455289d2b98b5f20348d097a284">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a28a32dc4d57b74b9c3e4dfa5124f41e1">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="ac711b54e3cb8b698593b35abe6d1531b" name="ac711b54e3cb8b698593b35abe6d1531b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac711b54e3cb8b698593b35abe6d1531b">&#9670;&#160;</a></span>visit() <span class="overload">[5/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac711b54e3cb8b698593b35abe6d1531b">&#9670;&#160;</a></span>visit() <span class="overload">[6/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -265,12 +309,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ac79ee8c2ad1306d097bab81be6c96bba">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#afb632edbfd45a01c93e673a44d7e6bea">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ac79ee8c2ad1306d097bab81be6c96bba">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="add26f26a369d5f10bfe8177c0b82fe45" name="add26f26a369d5f10bfe8177c0b82fe45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add26f26a369d5f10bfe8177c0b82fe45">&#9670;&#160;</a></span>visit() <span class="overload">[6/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#add26f26a369d5f10bfe8177c0b82fe45">&#9670;&#160;</a></span>visit() <span class="overload">[7/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,12 +336,39 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ab3d3bc40f759554b6180c452e9a706ec">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a2913fb7b0c050f44c364c3867081986b">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ab3d3bc40f759554b6180c452e9a706ec">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="a03aca89101a8f0ecf55923f93eab0806" name="a03aca89101a8f0ecf55923f93eab0806"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03aca89101a8f0ecf55923f93eab0806">&#9670;&#160;</a></span>visit() <span class="overload">[8/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../db/d2f/classsema_1_1BoundCompoundTargetLoad.html">BoundCompoundTargetLoad</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a3381b1671e2200d3a949a1a82b52c2df">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a6d26b3e5f19aba9ad49cdb7a573186e5">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a0087901bb9aed6255fbf6b86eb972458" name="a0087901bb9aed6255fbf6b86eb972458"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0087901bb9aed6255fbf6b86eb972458">&#9670;&#160;</a></span>visit() <span class="overload">[7/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0087901bb9aed6255fbf6b86eb972458">&#9670;&#160;</a></span>visit() <span class="overload">[9/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -319,12 +390,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#aa1063895d70a00713a8fdf64cdcea32b">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#ae5a78eb90d210281ef1e9acf1ebe334b">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#aa1063895d70a00713a8fdf64cdcea32b">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="aae0cb17a39af3ccb9f6cb593ecf6c5ba" name="aae0cb17a39af3ccb9f6cb593ecf6c5ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae0cb17a39af3ccb9f6cb593ecf6c5ba">&#9670;&#160;</a></span>visit() <span class="overload">[8/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aae0cb17a39af3ccb9f6cb593ecf6c5ba">&#9670;&#160;</a></span>visit() <span class="overload">[10/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -346,12 +417,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a939c9891330bc492a4a89151031cbfe9">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a69d156e9131024a14bcfa5fb2de6200e">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a939c9891330bc492a4a89151031cbfe9">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a8020a0bde7549fb88670d4756d5f32ac" name="a8020a0bde7549fb88670d4756d5f32ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8020a0bde7549fb88670d4756d5f32ac">&#9670;&#160;</a></span>visit() <span class="overload">[9/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8020a0bde7549fb88670d4756d5f32ac">&#9670;&#160;</a></span>visit() <span class="overload">[11/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -373,12 +444,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#aa9b58017010f8410929bbb583e93b7af">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a59c7af595527893a83d9cb62f07b5d15">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#aa9b58017010f8410929bbb583e93b7af">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a2583de304adf10f2036d1ab3e790c5a8" name="a2583de304adf10f2036d1ab3e790c5a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2583de304adf10f2036d1ab3e790c5a8">&#9670;&#160;</a></span>visit() <span class="overload">[10/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2583de304adf10f2036d1ab3e790c5a8">&#9670;&#160;</a></span>visit() <span class="overload">[12/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -400,12 +471,120 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a2c686f042a03f89b0d063586ba8ede75">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#aa1733221cd92b176a81b55aa3a2141bc">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a2c686f042a03f89b0d063586ba8ede75">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="aab0ae01ab9f6ab4003f7cef668ca8173" name="aab0ae01ab9f6ab4003f7cef668ca8173"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab0ae01ab9f6ab4003f7cef668ca8173">&#9670;&#160;</a></span>visit() <span class="overload">[13/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d5/d43/classsema_1_1BoundFailableHandleExpression.html">BoundFailableHandleExpression</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a2846efcd8ab803fe30e564283b615afa">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#adc30417fa13b5482e33b3773466d86a9">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="ad54bae84e9f570fa1ebf2e4aa0ff95dc" name="ad54bae84e9f570fa1ebf2e4aa0ff95dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad54bae84e9f570fa1ebf2e4aa0ff95dc">&#9670;&#160;</a></span>visit() <span class="overload">[14/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/dd5/classsema_1_1BoundFailStatement.html">BoundFailStatement</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a3985a4740943fe3adbdd76a3cd32ad5b">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#aa972a642f0ff048805c072de21a67f81">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="a8976340af100418f49311bfe969d3315" name="a8976340af100418f49311bfe969d3315"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8976340af100418f49311bfe969d3315">&#9670;&#160;</a></span>visit() <span class="overload">[15/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d9/d37/classsema_1_1BoundFallbackExpression.html">BoundFallbackExpression</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a7bf3df48f84d10283d8c221ee5120042">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#aa5109ad476c9d31887d79897e2676e2f">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="a2a313e65ef3002d8457b2d3969abcb4a" name="a2a313e65ef3002d8457b2d3969abcb4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a313e65ef3002d8457b2d3969abcb4a">&#9670;&#160;</a></span>visit() <span class="overload">[16/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../db/dcc/classsema_1_1BoundForStatement.html">BoundForStatement</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a9b1d5358bf357fc32a680eabe9a48c97">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a559165e1d73a0eb4ad3f85439a84c0ad">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a989b3970c8adc9157d339b4046fbc2bc" name="a989b3970c8adc9157d339b4046fbc2bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a989b3970c8adc9157d339b4046fbc2bc">&#9670;&#160;</a></span>visit() <span class="overload">[11/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a989b3970c8adc9157d339b4046fbc2bc">&#9670;&#160;</a></span>visit() <span class="overload">[17/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -427,12 +606,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a4399781b94d5a111293589da4cf113fd">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#ab0bbad4a973dc16862096fb4f897c991">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a4399781b94d5a111293589da4cf113fd">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a290b29d7fcbf16c944b2359f88596600" name="a290b29d7fcbf16c944b2359f88596600"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a290b29d7fcbf16c944b2359f88596600">&#9670;&#160;</a></span>visit() <span class="overload">[12/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a290b29d7fcbf16c944b2359f88596600">&#9670;&#160;</a></span>visit() <span class="overload">[18/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -454,12 +633,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a13f2d2b605b8385769e7a5369e42f97e">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a6a1bdb454d4c80300434ebea9a5d3f32">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a13f2d2b605b8385769e7a5369e42f97e">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
-<a id="a88e48f2f8c4f7a1b7a9f71958e80081d" name="a88e48f2f8c4f7a1b7a9f71958e80081d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88e48f2f8c4f7a1b7a9f71958e80081d">&#9670;&#160;</a></span>visit() <span class="overload">[13/24]</span></h2>
+<a id="aebd73f1b0760ddc102b781472d23baee" name="aebd73f1b0760ddc102b781472d23baee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebd73f1b0760ddc102b781472d23baee">&#9670;&#160;</a></span>visit() <span class="overload">[19/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -470,7 +649,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual void sema::BoundVisitor::visit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d3/dc8/classsema_1_1BoundIfExpression.html">BoundIfExpression</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="../../da/d6b/classsema_1_1BoundFunctionReference.html">BoundFunctionReference</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -481,12 +660,39 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#acabce2b6da1ccd907cffb8199003b3de">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#aa81c2ff0475aa5d4657e752e8aa01b5b">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#af70aa7d718fe0a3ca331e8aaab36e0fc">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="a662bfdf3942fbcbfa51710a04437f85f" name="a662bfdf3942fbcbfa51710a04437f85f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a662bfdf3942fbcbfa51710a04437f85f">&#9670;&#160;</a></span>visit() <span class="overload">[20/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/dec/classsema_1_1BoundIfStatement.html">BoundIfStatement</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#aab0be664df47b70c4a2ea12673bf6cdf">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a38b81707ba970049372c7bb4feff8140">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a81ce17662aa044532e84ac5ae11bceed" name="a81ce17662aa044532e84ac5ae11bceed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81ce17662aa044532e84ac5ae11bceed">&#9670;&#160;</a></span>visit() <span class="overload">[14/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a81ce17662aa044532e84ac5ae11bceed">&#9670;&#160;</a></span>visit() <span class="overload">[21/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -508,12 +714,39 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#aa02ad01aea6cd608911fcac3a902cb30">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a453ed645dda45a288f1e30eda47ce5ef">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#aa02ad01aea6cd608911fcac3a902cb30">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="a8e2f7f8c7c2634c18c1ae1c9781123e3" name="a8e2f7f8c7c2634c18c1ae1c9781123e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e2f7f8c7c2634c18c1ae1c9781123e3">&#9670;&#160;</a></span>visit() <span class="overload">[22/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../de/d3e/classsema_1_1BoundIndirectCall.html">BoundIndirectCall</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a7f59d75cf5c08f62bade439353923906">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a6379e85e64cd09c23043429daa916a92">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="accf2b4508edfaa54e740e372eb024849" name="accf2b4508edfaa54e740e372eb024849"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accf2b4508edfaa54e740e372eb024849">&#9670;&#160;</a></span>visit() <span class="overload">[15/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#accf2b4508edfaa54e740e372eb024849">&#9670;&#160;</a></span>visit() <span class="overload">[23/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -535,12 +768,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a31d6eae13ba5909ab3b94ec62727d69e">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#acadf91c7267f545dbad97766cad6aaf5">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a31d6eae13ba5909ab3b94ec62727d69e">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a58770adff643dede3a95430791aafa9b" name="a58770adff643dede3a95430791aafa9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58770adff643dede3a95430791aafa9b">&#9670;&#160;</a></span>visit() <span class="overload">[16/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a58770adff643dede3a95430791aafa9b">&#9670;&#160;</a></span>visit() <span class="overload">[24/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -562,12 +795,66 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a66c586afbf4b0e2e494bbde63fdfc27f">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a6aee274d74ad03fb4403f51572a82662">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a66c586afbf4b0e2e494bbde63fdfc27f">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="a4a9487156c524abc8a0834a0ce4605cb" name="a4a9487156c524abc8a0834a0ce4605cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a9487156c524abc8a0834a0ce4605cb">&#9670;&#160;</a></span>visit() <span class="overload">[25/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d5/d03/classsema_1_1BoundModuleReference.html">BoundModuleReference</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#ae9a405b6a3e3e9a0e94b2636cebd9ea2">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a87b31eae181c3de54153841d08f1a479">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="a8fc2aeb4b30e2f57d6561e152dd8e255" name="a8fc2aeb4b30e2f57d6561e152dd8e255"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fc2aeb4b30e2f57d6561e152dd8e255">&#9670;&#160;</a></span>visit() <span class="overload">[26/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../db/d54/classsema_1_1BoundNewExpression.html">BoundNewExpression</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a09f10542b7ebe7c8e70e98786eb4af8b">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ae620f21a0c6f866a20f623a3bdd48608">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a4d7488ae662dfe59e00796d05109ac67" name="a4d7488ae662dfe59e00796d05109ac67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d7488ae662dfe59e00796d05109ac67">&#9670;&#160;</a></span>visit() <span class="overload">[17/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d7488ae662dfe59e00796d05109ac67">&#9670;&#160;</a></span>visit() <span class="overload">[27/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -589,12 +876,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a27a583ea3b727c41d34508def8c49da0">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#ab13be1709c4eeab34e317e5b1da086f4">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a27a583ea3b727c41d34508def8c49da0">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a26cedce8dc0feaa873aa40fc8d491c5f" name="a26cedce8dc0feaa873aa40fc8d491c5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26cedce8dc0feaa873aa40fc8d491c5f">&#9670;&#160;</a></span>visit() <span class="overload">[18/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a26cedce8dc0feaa873aa40fc8d491c5f">&#9670;&#160;</a></span>visit() <span class="overload">[28/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -616,12 +903,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a1e5740c75e8e2fcce5d0b5679ef123ac">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a3fecfcd40930fa37a9b7e9a2491f985e">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a1e5740c75e8e2fcce5d0b5679ef123ac">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="ab824f5330370d4da04917875cd337ed9" name="ab824f5330370d4da04917875cd337ed9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab824f5330370d4da04917875cd337ed9">&#9670;&#160;</a></span>visit() <span class="overload">[19/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab824f5330370d4da04917875cd337ed9">&#9670;&#160;</a></span>visit() <span class="overload">[29/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -643,14 +930,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ad7c3f1c0c341ebf0e04c6bf86482d80b">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a4ff38f0f5aaab8db69236c616ffa6309">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ad7c3f1c0c341ebf0e04c6bf86482d80b">zir::BoundIRGenerator</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00213">sema::BoundArrayLiteral::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00274">sema::BoundAssignment::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00167">sema::BoundBinaryExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00106">sema::BoundBlock::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00323">sema::BoundBreakStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00137">sema::BoundCast::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00333">sema::BoundContinueStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00373">sema::BoundEnumDeclaration::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00095">sema::BoundExpressionStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00359">sema::BoundExternalFunctionDeclaration::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00198">sema::BoundFunctionCall::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00349">sema::BoundFunctionDeclaration::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00293">sema::BoundIfExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00231">sema::BoundIndexAccess::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00125">sema::BoundLiteral::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00385">sema::BoundMemberAccess::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00366">sema::BoundRecordDeclaration::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00259">sema::BoundReturnStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00418">sema::BoundRootNode::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00399">sema::BoundStructLiteral::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00182">sema::BoundUnaryExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00247">sema::BoundVariableDeclaration::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00149">sema::BoundVariableExpression::accept()</a>, and <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00313">sema::BoundWhileStatement::accept()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00321">sema::BoundArrayLiteral::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00607">sema::BoundAsmStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00517">sema::BoundAssignment::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00217">sema::BoundBinaryExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00131">sema::BoundBlock::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00584">sema::BoundBreakStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00163">sema::BoundCast::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00186">sema::BoundCompoundTargetLoad::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00625">sema::BoundContinueStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00660">sema::BoundEnumDeclaration::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00121">sema::BoundExpressionStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00648">sema::BoundExternalFunctionDeclaration::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00452">sema::BoundFailableHandleExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00500">sema::BoundFailStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00430">sema::BoundFallbackExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00571">sema::BoundForStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00271">sema::BoundFunctionCall::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00639">sema::BoundFunctionDeclaration::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00309">sema::BoundFunctionReference::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00535">sema::BoundIfStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00392">sema::BoundIndexAccess::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00292">sema::BoundIndirectCall::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00152">sema::BoundLiteral::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00678">sema::BoundMemberAccess::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00200">sema::BoundModuleReference::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00344">sema::BoundNewExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00654">sema::BoundRecordDeclaration::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00482">sema::BoundReturnStatement::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00731">sema::BoundRootNode::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00711">sema::BoundStructLiteral::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00666">sema::BoundTaggedUnionDeclaration::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00695">sema::BoundTaggedUnionLiteral::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00236">sema::BoundTernaryExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00411">sema::BoundTryExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00251">sema::BoundUnaryExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00468">sema::BoundVariableDeclaration::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00174">sema::BoundVariableExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00376">sema::BoundWeakAliveExpression::accept()</a>, <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00361">sema::BoundWeakLockExpression::accept()</a>, and <a class="el" href="../../dc/d0b/bound__nodes_8hpp_source.html#l00551">sema::BoundWhileStatement::accept()</a>.</p>
 
 </div>
 </div>
 <a id="ae6ff71d51343bf6846594601e9531923" name="ae6ff71d51343bf6846594601e9531923"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6ff71d51343bf6846594601e9531923">&#9670;&#160;</a></span>visit() <span class="overload">[20/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6ff71d51343bf6846594601e9531923">&#9670;&#160;</a></span>visit() <span class="overload">[30/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -672,12 +959,120 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a68eafad8e56694bba35221a19d80b1aa">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#ac422baac0ccf9876da632ad18e8e07f2">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a68eafad8e56694bba35221a19d80b1aa">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="aa590bc0cb7067a34096b1a285677b269" name="aa590bc0cb7067a34096b1a285677b269"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa590bc0cb7067a34096b1a285677b269">&#9670;&#160;</a></span>visit() <span class="overload">[31/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dc/da0/classsema_1_1BoundTaggedUnionDeclaration.html">BoundTaggedUnionDeclaration</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a460c3660d9c865efa5a02a81481a794a">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#aef7e4d5e700525d5e3edb19538e30b6b">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="aecfff3e6bc695a6729e3575d526cbc81" name="aecfff3e6bc695a6729e3575d526cbc81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecfff3e6bc695a6729e3575d526cbc81">&#9670;&#160;</a></span>visit() <span class="overload">[32/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d5/da5/classsema_1_1BoundTaggedUnionLiteral.html">BoundTaggedUnionLiteral</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a7fd63330487b2118652330c783ebe12b">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ab66929d388d46f9b7ed45dc37cabfb5c">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="a1dba80fa0897fb7556de48f745cb8ee9" name="a1dba80fa0897fb7556de48f745cb8ee9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dba80fa0897fb7556de48f745cb8ee9">&#9670;&#160;</a></span>visit() <span class="overload">[33/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../db/d94/classsema_1_1BoundTernaryExpression.html">BoundTernaryExpression</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a69af5846e97a358fc2ab362f88587676">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#aec47c185511f61025d2ca7a0b26fb0d2">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="a4324ed37eb204ca9d40a4147328e3e9f" name="a4324ed37eb204ca9d40a4147328e3e9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4324ed37eb204ca9d40a4147328e3e9f">&#9670;&#160;</a></span>visit() <span class="overload">[34/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/d57/classsema_1_1BoundTryExpression.html">BoundTryExpression</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#aafbf9542b83914e73d7aef5408aca599">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a21635ada5a230f2db1b4ac6bcdf523e1">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a16b215bbf67151a2bd8ca2b6fbad5fc5" name="a16b215bbf67151a2bd8ca2b6fbad5fc5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16b215bbf67151a2bd8ca2b6fbad5fc5">&#9670;&#160;</a></span>visit() <span class="overload">[21/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a16b215bbf67151a2bd8ca2b6fbad5fc5">&#9670;&#160;</a></span>visit() <span class="overload">[35/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -699,12 +1094,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a262d7f51907efac5f1c85ec4d7920dc2">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#aa714871da010a5c3d9d7cde761c6d998">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a262d7f51907efac5f1c85ec4d7920dc2">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a67bd2062f7e2ae57fc627ef9fca6f951" name="a67bd2062f7e2ae57fc627ef9fca6f951"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67bd2062f7e2ae57fc627ef9fca6f951">&#9670;&#160;</a></span>visit() <span class="overload">[22/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a67bd2062f7e2ae57fc627ef9fca6f951">&#9670;&#160;</a></span>visit() <span class="overload">[36/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -726,12 +1121,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#af759bc9fc74013154433566ecc57faed">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#af3ed62ab981dbf3f9ef20321e905c294">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#af759bc9fc74013154433566ecc57faed">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="a6765ed7798f94240222ec77a3285d7ab" name="a6765ed7798f94240222ec77a3285d7ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6765ed7798f94240222ec77a3285d7ab">&#9670;&#160;</a></span>visit() <span class="overload">[23/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6765ed7798f94240222ec77a3285d7ab">&#9670;&#160;</a></span>visit() <span class="overload">[37/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -753,12 +1148,66 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a576b2e50a24d9386f64fbb5dc7aa9e40">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a2a88bf58ead7a9f512c904908d6bd226">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a576b2e50a24d9386f64fbb5dc7aa9e40">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="ac21cb647c58e0a3a6ca0ecceb95cfabe" name="ac21cb647c58e0a3a6ca0ecceb95cfabe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac21cb647c58e0a3a6ca0ecceb95cfabe">&#9670;&#160;</a></span>visit() <span class="overload">[38/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d2/d78/classsema_1_1BoundWeakAliveExpression.html">BoundWeakAliveExpression</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a10d37bdaddaa2ff2085062d82a2c179e">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#a415f8cbaa28bdf58198d96fae276a88c">zir::BoundIRGenerator</a>.</p>
+
+</div>
+</div>
+<a id="abbea80235944587d2acf4bad7bc0095b" name="abbea80235944587d2acf4bad7bc0095b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbea80235944587d2acf4bad7bc0095b">&#9670;&#160;</a></span>visit() <span class="overload">[39/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sema::BoundVisitor::visit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/df0/classsema_1_1BoundWeakLockExpression.html">BoundWeakLockExpression</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a50c5e6a70d4a31b6175440710f21b2ed">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#aecd12f16b6eea2ecb706a6f2f4051d86">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>
 <a id="adcf84f4d87eec92029ed19831bd510af" name="adcf84f4d87eec92029ed19831bd510af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adcf84f4d87eec92029ed19831bd510af">&#9670;&#160;</a></span>visit() <span class="overload">[24/24]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adcf84f4d87eec92029ed19831bd510af">&#9670;&#160;</a></span>visit() <span class="overload">[40/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -780,7 +1229,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ab77094dd405a58b294d433237c1d1f89">zir::BoundIRGenerator</a>.</p>
+<p>Implemented in <a class="el" href="../../da/de9/classcodegen_1_1LLVMCodeGen.html#a018ab93face6bf4b55dc3bfd1ebfa8db">codegen::LLVMCodeGen</a>, and <a class="el" href="../../d4/da0/classzir_1_1BoundIRGenerator.html#ab77094dd405a58b294d433237c1d1f89">zir::BoundIRGenerator</a>.</p>
 
 </div>
 </div>

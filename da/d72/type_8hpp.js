@@ -5,8 +5,13 @@ var type_8hpp =
     [ "zir::PointerType", "d4/d67/classzir_1_1PointerType.html", "d4/d67/classzir_1_1PointerType" ],
     [ "zir::RecordType", "da/de1/classzir_1_1RecordType.html", "da/de1/classzir_1_1RecordType" ],
     [ "zir::RecordType::Field", "d3/dc7/structzir_1_1RecordType_1_1Field.html", "d3/dc7/structzir_1_1RecordType_1_1Field" ],
+    [ "zir::ClassType", "dc/dae/classzir_1_1ClassType.html", "dc/dae/classzir_1_1ClassType" ],
     [ "zir::EnumType", "df/dd7/classzir_1_1EnumType.html", "df/dd7/classzir_1_1EnumType" ],
+    [ "zir::EnumType::Variant", "d1/d76/structzir_1_1EnumType_1_1Variant.html", "d1/d76/structzir_1_1EnumType_1_1Variant" ],
+    [ "zir::TaggedUnionType", "dd/db3/classzir_1_1TaggedUnionType.html", "dd/db3/classzir_1_1TaggedUnionType" ],
+    [ "zir::TaggedUnionType::Variant", "df/d7f/structzir_1_1TaggedUnionType_1_1Variant.html", "df/d7f/structzir_1_1TaggedUnionType_1_1Variant" ],
     [ "zir::ArrayType", "d8/d68/classzir_1_1ArrayType.html", "d8/d68/classzir_1_1ArrayType" ],
+    [ "zir::FunctionPointerType", "d0/d48/classzir_1_1FunctionPointerType.html", "d0/d48/classzir_1_1FunctionPointerType" ],
     [ "zir::TypeKind", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959", [
       [ "zir::TypeKind::Void", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a81ceb48a978444906d80119200aa358d", null ],
       [ "zir::TypeKind::Int8", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a7d839b2c12bfd40ac121b4cc9e81c539", null ],
@@ -25,8 +30,12 @@ var type_8hpp =
       [ "zir::TypeKind::Bool", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959ac26f15e86e3de4c398a8273272aba034", null ],
       [ "zir::TypeKind::Char", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a8e95e84813830072b7516cfaa7dbc1a9", null ],
       [ "zir::TypeKind::Pointer", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a61cf8510205077b6f5491d38cd44c0f7", null ],
+      [ "zir::TypeKind::NullPtr", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959af359467a48f58ac449aed50254aa7f38", null ],
       [ "zir::TypeKind::Record", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a6a0d9eaee314c567fd72fb97ee707a36", null ],
+      [ "zir::TypeKind::Class", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a9bd81329febf6efe22788e03ddeaf0af", null ],
       [ "zir::TypeKind::Array", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a4410ec34d9e6c1a68100ca0ce033fb17", null ],
-      [ "zir::TypeKind::Enum", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959acf20423ed48998082c20099488a0917c", null ]
+      [ "zir::TypeKind::Enum", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959acf20423ed48998082c20099488a0917c", null ],
+      [ "zir::TypeKind::TaggedUnion", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959ad3f47562e66b3b6ebc17a6a56d762743", null ],
+      [ "zir::TypeKind::FunctionPointer", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a208adf8bf2acdb0d453083d29d6e7afb", null ]
     ] ]
 ];

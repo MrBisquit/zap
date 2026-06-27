@@ -1,13 +1,26 @@
 var classzir_1_1RecordType =
 [
     [ "Field", "d3/dc7/structzir_1_1RecordType_1_1Field.html", "d3/dc7/structzir_1_1RecordType_1_1Field" ],
-    [ "RecordType", "da/de1/classzir_1_1RecordType.html#a858e48d56d0f21cf4b46a731ac1aabf0", null ],
+    [ "RecordType", "da/de1/classzir_1_1RecordType.html#a40b0e02dfcf54c7c9d8b9a28c548cec9", null ],
     [ "addField", "da/de1/classzir_1_1RecordType.html#a366d2dce5a511dd096d26fa3a1fe8256", null ],
+    [ "addField", "da/de1/classzir_1_1RecordType.html#acabd57192206346ce4460d42b014139a", null ],
+    [ "getCodegenName", "da/de1/classzir_1_1RecordType.html#ae6314d160618f733727b7c2bc9825cf5", null ],
     [ "getFields", "da/de1/classzir_1_1RecordType.html#acec119b3f75180788156f86dca6fba8b", null ],
+    [ "getGenericArguments", "da/de1/classzir_1_1RecordType.html#a23eb1992007fb74d2ef4b503eacb762e", null ],
+    [ "getGenericBaseName", "da/de1/classzir_1_1RecordType.html#aee6c17ee50bf30f3ba099632ffad0754", null ],
+    [ "getGenericCodegenBaseName", "da/de1/classzir_1_1RecordType.html#ad3cdd2446a51e59a74d68a09dcff4cb7", null ],
     [ "getKind", "da/de1/classzir_1_1RecordType.html#a4477e37f3bcd8a83efe5053d17c2e58f", null ],
     [ "getName", "da/de1/classzir_1_1RecordType.html#a0bbbb00719716290a60850a809054510", null ],
+    [ "isGenericInstance", "da/de1/classzir_1_1RecordType.html#a0dc8496f8af04506f91c57f0649a260c", null ],
     [ "isReferenceType", "da/de1/classzir_1_1RecordType.html#a6007ff97516fc2b6d85ecfab290dea4b", null ],
+    [ "setGenericInstance", "da/de1/classzir_1_1RecordType.html#a5ea346eb95df6f260a1d50322d45a582", null ],
     [ "toString", "da/de1/classzir_1_1RecordType.html#a09d4c52f8e08da46b8ac342c1ee2d078", null ],
+    [ "codegenName", "da/de1/classzir_1_1RecordType.html#ad6dcdc541634befd52df3cbe2574f3ae", null ],
     [ "fields", "da/de1/classzir_1_1RecordType.html#abeebac58447c3ef06d16eaefac0eb170", null ],
+    [ "genericArguments", "da/de1/classzir_1_1RecordType.html#a7dfea1a79b08bac40a3041229f8d9f94", null ],
+    [ "genericBaseName", "da/de1/classzir_1_1RecordType.html#a9717d9730840503f756ed69880c6532e", null ],
+    [ "genericCodegenBaseName", "da/de1/classzir_1_1RecordType.html#a0bbf365ab48d7faae5a2c06bdba4622c", null ],
+    [ "hasReprC", "da/de1/classzir_1_1RecordType.html#a5c8fc401eb7d52b4f4d243251f3e0872", null ],
+    [ "isPacked", "da/de1/classzir_1_1RecordType.html#a21287a238fd65e518f369d8dd66239f4", null ],
     [ "name", "da/de1/classzir_1_1RecordType.html#a936f8a075123ef83e837a8f5abe7248d", null ]
 ];

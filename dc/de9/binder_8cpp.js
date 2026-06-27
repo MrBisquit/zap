@@ -1,0 +1,26 @@
+var binder_8cpp =
+[
+    [ "sema::abiTypeKey", "d7/d39/namespacesema.html#a38e33d177dce5f7b28d53d171cfb62cb", null ],
+    [ "sema::blockAlwaysReturns", "d7/d39/namespacesema.html#ac98ede0f3a0dc7b7646f742a92921351", null ],
+    [ "sema::collectOverloads", "d7/d39/namespacesema.html#a353ae8f08ed93bfc265b342042989fcf", null ],
+    [ "sema::deriveValueExpressionFromBlock", "d7/d39/namespacesema.html#ac4149da11ebd06d1de01c84ed4c76497", null ],
+    [ "sema::deriveValueExpressionFromIf", "d7/d39/namespacesema.html#ab834aafd43a3b57c67955ee465f01441", null ],
+    [ "sema::extractQualifiedPath", "d7/d39/namespacesema.html#ad6d422293d0d470ef76a5dc8bdd57bec", null ],
+    [ "sema::failableErrorType", "d7/d39/namespacesema.html#a9b9ac55666aa5e79ceeaf47974d37750", null ],
+    [ "sema::failableValueType", "d7/d39/namespacesema.html#a3a2f25914014210aab9260b41491c847", null ],
+    [ "sema::isFailableType", "d7/d39/namespacesema.html#a6e5a160487786fb691ad516d91eae2f3", null ],
+    [ "sema::isStringType", "d7/d39/namespacesema.html#a4662f3ed0037f0750a99d40b87832862", null ],
+    [ "sema::isVariadicViewType", "d7/d39/namespacesema.html#a0d0cd7eb4e50cf28045b9aacd27af483", null ],
+    [ "sema::makeDefaultValueExpr", "d7/d39/namespacesema.html#ac5487dc0b877139c2d8e8aeac0b991ca", null ],
+    [ "sema::makeFailableErrorExpr", "d7/d39/namespacesema.html#ae3d979044b917c417a411cce3f91bab2", null ],
+    [ "sema::makeFailableType", "d7/d39/namespacesema.html#ab49df89f8da682c412bcc1accc0042c2", null ],
+    [ "sema::makeFailableValueExpr", "d7/d39/namespacesema.html#a3c82a4fbf2afa109304683d67f2b8294", null ],
+    [ "sema::makeVariadicViewType", "d7/d39/namespacesema.html#a6ebb0074016f46039eee599baf2c94ef", null ],
+    [ "sema::renderGenericCodegenName", "d7/d39/namespacesema.html#a0df647d0506c3bae84da718e8b5d45cc", null ],
+    [ "sema::renderGenericTypeName", "d7/d39/namespacesema.html#aeb6d79784fbca497b1cfbc28733f83ba", null ],
+    [ "sema::sameFunctionSignature", "d7/d39/namespacesema.html#ab5a73ae519850ffa766a9ca72ebc144f", null ],
+    [ "sema::sameMethodDispatchSignature", "d7/d39/namespacesema.html#a878589a3388ccc402729a8b1a133ef8c", null ],
+    [ "sema::sanitizeTypeName", "d7/d39/namespacesema.html#ae1c1adc63a94d804617d53399c71d6be", null ],
+    [ "sema::splitQualified", "d7/d39/namespacesema.html#a4a94bb1034064c1900bfb79268609cc0", null ],
+    [ "sema::stmtAlwaysReturns", "d7/d39/namespacesema.html#ad3baf5fefd3d5b1f085cd0a0d7888a89", null ]
+];

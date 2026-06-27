@@ -1,6 +1,14 @@
 var namespacezir =
 [
+    [ "anonymous_namespace{failable_type.cpp}", "d5/dbd/namespacezir_1_1anonymous__namespace_02failable__type_8cpp_03.html", [
+      [ "asFailableRecord", "d5/dbd/namespacezir_1_1anonymous__namespace_02failable__type_8cpp_03.html#ac60dc893cce0a03277740b35d2c4b898", null ],
+      [ "sanitizeFailableTypeName", "d5/dbd/namespacezir_1_1anonymous__namespace_02failable__type_8cpp_03.html#a18a8f25d8c6f89c2a51e4cd2f9dea799", null ]
+    ] ],
+    [ "anonymous_namespace{ir_generator.cpp}", "d5/d7d/namespacezir_1_1anonymous__namespace_02ir__generator_8cpp_03.html", [
+      [ "renderTypeForUser", "d5/d7d/namespacezir_1_1anonymous__namespace_02ir__generator_8cpp_03.html#ad93ddfa64e7e1896d384a501109ee575", null ]
+    ] ],
     [ "BasicBlock", "d7/d6e/classzir_1_1BasicBlock.html", "d7/d6e/classzir_1_1BasicBlock" ],
+    [ "FailableTypeLayout", "d4/d3c/structzir_1_1FailableTypeLayout.html", "d4/d3c/structzir_1_1FailableTypeLayout" ],
     [ "Function", "dc/d90/classzir_1_1Function.html", "dc/d90/classzir_1_1Function" ],
     [ "Instruction", "d0/dad/classzir_1_1Instruction.html", "d0/dad/classzir_1_1Instruction" ],
     [ "BinaryInst", "df/d0a/classzir_1_1BinaryInst.html", "df/d0a/classzir_1_1BinaryInst" ],
@@ -18,18 +26,29 @@ var namespacezir =
     [ "GetElementPtrInst", "db/dee/classzir_1_1GetElementPtrInst.html", "db/dee/classzir_1_1GetElementPtrInst" ],
     [ "PhiInst", "d7/de6/classzir_1_1PhiInst.html", "d7/de6/classzir_1_1PhiInst" ],
     [ "CastInst", "d8/d42/classzir_1_1CastInst.html", "d8/d42/classzir_1_1CastInst" ],
+    [ "WeakLockInst", "d0/d7a/classzir_1_1WeakLockInst.html", "d0/d7a/classzir_1_1WeakLockInst" ],
+    [ "WeakAliveInst", "d3/d31/classzir_1_1WeakAliveInst.html", "d3/d31/classzir_1_1WeakAliveInst" ],
+    [ "AsmOperand", "d6/d55/structzir_1_1AsmOperand.html", "d6/d55/structzir_1_1AsmOperand" ],
+    [ "InlineAsmInst", "da/d3e/classzir_1_1InlineAsmInst.html", "da/d3e/classzir_1_1InlineAsmInst" ],
     [ "BoundIRGenerator", "d4/da0/classzir_1_1BoundIRGenerator.html", "d4/da0/classzir_1_1BoundIRGenerator" ],
     [ "Module", "d9/d68/classzir_1_1Module.html", "d9/d68/classzir_1_1Module" ],
     [ "Type", "d9/dd2/classzir_1_1Type.html", "d9/dd2/classzir_1_1Type" ],
     [ "PrimitiveType", "d0/d21/classzir_1_1PrimitiveType.html", "d0/d21/classzir_1_1PrimitiveType" ],
     [ "PointerType", "d4/d67/classzir_1_1PointerType.html", "d4/d67/classzir_1_1PointerType" ],
     [ "RecordType", "da/de1/classzir_1_1RecordType.html", "da/de1/classzir_1_1RecordType" ],
+    [ "ClassType", "dc/dae/classzir_1_1ClassType.html", "dc/dae/classzir_1_1ClassType" ],
     [ "EnumType", "df/dd7/classzir_1_1EnumType.html", "df/dd7/classzir_1_1EnumType" ],
+    [ "TaggedUnionType", "dd/db3/classzir_1_1TaggedUnionType.html", "dd/db3/classzir_1_1TaggedUnionType" ],
     [ "ArrayType", "d8/d68/classzir_1_1ArrayType.html", "d8/d68/classzir_1_1ArrayType" ],
+    [ "FunctionPointerType", "d0/d48/classzir_1_1FunctionPointerType.html", "d0/d48/classzir_1_1FunctionPointerType" ],
     [ "Value", "da/d98/classzir_1_1Value.html", "da/d98/classzir_1_1Value" ],
+    [ "GlobalAddress", "db/d7b/classzir_1_1GlobalAddress.html", "db/d7b/classzir_1_1GlobalAddress" ],
     [ "Register", "da/d1e/classzir_1_1Register.html", "da/d1e/classzir_1_1Register" ],
     [ "Constant", "da/d2d/classzir_1_1Constant.html", "da/d2d/classzir_1_1Constant" ],
+    [ "AggregateConstant", "dd/de3/classzir_1_1AggregateConstant.html", "dd/de3/classzir_1_1AggregateConstant" ],
+    [ "ArrayConstant", "d1/dc9/classzir_1_1ArrayConstant.html", "d1/dc9/classzir_1_1ArrayConstant" ],
     [ "Argument", "d3/d57/classzir_1_1Argument.html", "d3/d57/classzir_1_1Argument" ],
+    [ "Global", "d0/d8c/classzir_1_1Global.html", "d0/d8c/classzir_1_1Global" ],
     [ "OpCode", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847a", [
       [ "Alloca", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aadb253826d18dad4c6bf8baedd448cd17", null ],
       [ "Load", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aaf19dbf2edb3a0bd74b0524d960ff21eb", null ],
@@ -41,6 +60,12 @@ var namespacezir =
       [ "UDiv", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aa100a973b58634646d669bda4a2da9ea1", null ],
       [ "SRem", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aa9c46bb7eea63f34b9659973c34a62392", null ],
       [ "URem", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aa624f2b7ef7aa5811e332ca41d0ba1dc8", null ],
+      [ "Shl", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aac77fc1b68fd230ff8904653138f8bfd3", null ],
+      [ "LShr", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aa96dd4c7a532fafd8d354167d827cd103", null ],
+      [ "AShr", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aad55f38422a1ff66e5e74a2f857de3c4b", null ],
+      [ "BitAnd", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aae5c7b3dc6fa17e0c1d0586d1a169c77d", null ],
+      [ "BitOr", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aa04306ca0b4b3ed9a5cedc16d4acbc2b8", null ],
+      [ "BitXor", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aac23bb1635c2e183c276b68ecdcf076c1", null ],
       [ "Cmp", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aac9b4c62f6dc1bc5caf3c768b687cbf7e", null ],
       [ "Br", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aa8d37869ebc7af08a31df14fe3f48bee2", null ],
       [ "CondBr", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aaa7438498b20c25b5e98e14b77e864ced", null ],
@@ -51,7 +76,10 @@ var namespacezir =
       [ "Alloc", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aaea571dc00aef155a16d4e7e1861e1682", null ],
       [ "GetElementPtr", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aa58b2d3fcee1d34f2fbb772b5f1295c4f", null ],
       [ "Phi", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aa5a82bece4586ad7cb17ba739a2db7f67", null ],
-      [ "Cast", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aa4cd9f3996d60790cd11c04f842ebc43c", null ]
+      [ "Cast", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aa4cd9f3996d60790cd11c04f842ebc43c", null ],
+      [ "WeakLock", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aac6ac0837d2c489cbc30e0670ff970d47", null ],
+      [ "WeakAlive", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aad0a98cdd30a9fb21eee7e12be36a541c", null ],
+      [ "InlineAsm", "df/d35/namespacezir.html#ab4e12cb1b0618e9ddeb42f32bacb847aa17ad1a14b4b00de404f75cf67a4e25c4", null ]
     ] ],
     [ "TypeKind", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959", [
       [ "Void", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a81ceb48a978444906d80119200aa358d", null ],
@@ -71,13 +99,24 @@ var namespacezir =
       [ "Bool", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959ac26f15e86e3de4c398a8273272aba034", null ],
       [ "Char", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a8e95e84813830072b7516cfaa7dbc1a9", null ],
       [ "Pointer", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a61cf8510205077b6f5491d38cd44c0f7", null ],
+      [ "NullPtr", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959af359467a48f58ac449aed50254aa7f38", null ],
       [ "Record", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a6a0d9eaee314c567fd72fb97ee707a36", null ],
+      [ "Class", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a9bd81329febf6efe22788e03ddeaf0af", null ],
       [ "Array", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a4410ec34d9e6c1a68100ca0ce033fb17", null ],
-      [ "Enum", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959acf20423ed48998082c20099488a0917c", null ]
+      [ "Enum", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959acf20423ed48998082c20099488a0917c", null ],
+      [ "TaggedUnion", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959ad3f47562e66b3b6ebc17a6a56d762743", null ],
+      [ "FunctionPointer", "df/d35/namespacezir.html#a8aff9f37489c6b980b6ff3787f3a6959a208adf8bf2acdb0d453083d29d6e7afb", null ]
     ] ],
     [ "ValueKind", "df/d35/namespacezir.html#a0b65443104b99920199d964de2b4a609", [
       [ "Register", "df/d35/namespacezir.html#a0b65443104b99920199d964de2b4a609a0ba7583639a274c434bbe6ef797115a4", null ],
       [ "Constant", "df/d35/namespacezir.html#a0b65443104b99920199d964de2b4a609acb17869fe51048b5a5c4c6106551a255", null ],
-      [ "Argument", "df/d35/namespacezir.html#a0b65443104b99920199d964de2b4a609a1853680a6d666b9fea2d789dd00bc7eb", null ]
-    ] ]
+      [ "AggregateConstant", "df/d35/namespacezir.html#a0b65443104b99920199d964de2b4a609ad883532025c290be343f0fb4a98d8488", null ],
+      [ "ArrayConstant", "df/d35/namespacezir.html#a0b65443104b99920199d964de2b4a609a07059287708f94d11936e723869938fe", null ],
+      [ "GlobalAddress", "df/d35/namespacezir.html#a0b65443104b99920199d964de2b4a609a37036fbc2f3c6e1455128d799aceee06", null ],
+      [ "Argument", "df/d35/namespacezir.html#a0b65443104b99920199d964de2b4a609a1853680a6d666b9fea2d789dd00bc7eb", null ],
+      [ "Global", "df/d35/namespacezir.html#a0b65443104b99920199d964de2b4a609a4cc6684df7b4a92b1dec6fce3264fac8", null ]
+    ] ],
+    [ "getFailableTypeLayout", "df/d35/namespacezir.html#ac3fcfd7a3dc3e157f2efa1ceadb6d152", null ],
+    [ "makeFailableRecordType", "df/d35/namespacezir.html#acbfd65ffd533ef7640436c0fcec237aa", null ],
+    [ "kFailableTypePrefix", "df/d35/namespacezir.html#abd7ffc745141f08c0748b2d185430660", null ]
 ];
