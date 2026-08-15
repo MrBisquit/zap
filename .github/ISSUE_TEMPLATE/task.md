@@ -8,8 +8,8 @@ type: Task
 ---
 
 ## Description
-A list of requirements, which can be discussed further in the comments below
+<!--A list of requirements, which can be discussed further in the comments below-->
 
-## (Optional) Acceptance Criteria
-Optional acceptance criteria, so what needs to be fulfilled for this task to
-be completed fully
+<!--## (Optional) Acceptance Criteria-->
+<!--Optional acceptance criteria, so what needs to be fulfilled for this task to
+be completed fully-->
