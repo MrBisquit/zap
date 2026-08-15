@@ -63,7 +63,8 @@ var hierarchy =
       [ "sema::BoundTaggedUnionDeclaration", "dc/da0/classsema_1_1BoundTaggedUnionDeclaration.html", null ]
     ] ],
     [ "sema::BoundVisitor", "d0/df9/classsema_1_1BoundVisitor.html", [
-      [ "zir::BoundIRGenerator", "d4/da0/classzir_1_1BoundIRGenerator.html", null ]
+      [ "zir::BoundIRGenerator", "d4/da0/classzir_1_1BoundIRGenerator.html", null ],
+      [ "zir::anonymous_namespace{function_reachability.cpp}::ReachabilityVisitor", "da/dbd/classzir_1_1anonymous__namespace_02function__reachability_8cpp_03_1_1ReachabilityVisitor.html", null ]
     ] ],
     [ "zap::lsp::SourceManager::CachedFile", "d8/d32/structzap_1_1lsp_1_1SourceManager_1_1CachedFile.html", null ],
     [ "zap::lsp::CallContext", "d7/d3f/structzap_1_1lsp_1_1CallContext.html", null ],
@@ -72,6 +73,7 @@ var hierarchy =
     [ "codegen::ClassArcEmitter", "d9/d1d/classcodegen_1_1ClassArcEmitter.html", null ],
     [ "sema::Binder::ClassInfo", "d4/d52/structsema_1_1Binder_1_1ClassInfo.html", null ],
     [ "zap::args::CmdlineArgs", "d9/d45/structzap_1_1args_1_1CmdlineArgs.html", null ],
+    [ "sema::ConstantEvaluator", "d9/d63/classsema_1_1ConstantEvaluator.html", null ],
     [ "zir::ControlFlowGraph", "d6/de1/classzir_1_1ControlFlowGraph.html", null ],
     [ "sema::Conversion", "dc/d73/structsema_1_1Conversion.html", null ],
     [ "sema::ConversionClassifier", "da/d5d/classsema_1_1ConversionClassifier.html", null ],
@@ -91,6 +93,8 @@ var hierarchy =
     [ "zap::frontend::FrontendSession", "d0/d02/classzap_1_1frontend_1_1FrontendSession.html", null ],
     [ "zap::frontend::FrontendSessionConfig", "d6/dff/structzap_1_1frontend_1_1FrontendSessionConfig.html", null ],
     [ "zir::Function", "dc/d90/classzir_1_1Function.html", null ],
+    [ "zir::FunctionReachability", "d9/d35/structzir_1_1FunctionReachability.html", null ],
+    [ "zir::FunctionReachabilityAnalyzer", "dd/d82/classzir_1_1FunctionReachabilityAnalyzer.html", null ],
     [ "zir::anonymous_namespace{zir_verifier_function.cpp}::FunctionVerifier", "d7/dbd/classzir_1_1anonymous__namespace_02zir__verifier__function_8cpp_03_1_1FunctionVerifier.html", null ],
     [ "GenericConstraint", "d2/d6f/structGenericConstraint.html", null ],
     [ "zap::HandleColors", "d4/d3e/structzap_1_1HandleColors.html", null ],
@@ -131,6 +135,7 @@ var hierarchy =
     [ "zir::Module", "d9/d68/classzir_1_1Module.html", null ],
     [ "sema::ModuleInfo", "d0/d65/structsema_1_1ModuleInfo.html", null ],
     [ "sema::Binder::ModuleState", "d2/dbd/structsema_1_1Binder_1_1ModuleState.html", null ],
+    [ "sema::anonymous_namespace{binder_mutability.cpp}::MutablePlaceResult", "d3/d96/structsema_1_1anonymous__namespace_02binder__mutability_8cpp_03_1_1MutablePlaceResult.html", null ],
     [ "Node", "df/dd0/classNode.html", [
       [ "ExpressionNode", "dd/d06/classExpressionNode.html", [
         [ "ArrayLiteralNode", "d0/d85/classArrayLiteralNode.html", null ],
@@ -162,8 +167,8 @@ var hierarchy =
       [ "StatementNode", "d1/dcd/classStatementNode.html", [
         [ "AsmStmtNode", "d8/ddd/classAsmStmtNode.html", null ],
         [ "AssignNode", "d8/d5e/classAssignNode.html", null ],
+        [ "BindingDecl", "d2/dcc/classBindingDecl.html", null ],
         [ "BreakNode", "d7/db8/classBreakNode.html", null ],
-        [ "ConstDecl", "d2/def/classConstDecl.html", null ],
         [ "ContinueNode", "dd/d66/classContinueNode.html", null ],
         [ "FailNode", "d5/d44/classFailNode.html", null ],
         [ "ForInNode", "dd/def/classForInNode.html", null ],
@@ -172,20 +177,18 @@ var hierarchy =
         [ "IfNode", "d8/dd5/classIfNode.html", null ],
         [ "IfTypeNode", "d1/dbf/classIfTypeNode.html", null ],
         [ "ReturnNode", "dd/d80/classReturnNode.html", null ],
-        [ "VarDecl", "d0/d3d/classVarDecl.html", null ],
         [ "WhileNode", "d2/df8/classWhileNode.html", null ]
       ] ],
       [ "TopLevel", "d8/d65/classTopLevel.html", [
+        [ "BindingDecl", "d2/dcc/classBindingDecl.html", null ],
         [ "ClassDecl", "d6/d7b/classClassDecl.html", null ],
-        [ "ConstDecl", "d2/def/classConstDecl.html", null ],
         [ "EnumDecl", "d0/d96/classEnumDecl.html", null ],
         [ "ExtDecl", "d3/df9/classExtDecl.html", null ],
         [ "FunDecl", "d3/d94/classFunDecl.html", null ],
         [ "ImportNode", "d5/d3f/classImportNode.html", null ],
         [ "RecordDecl", "d9/d3d/classRecordDecl.html", null ],
         [ "StructDeclarationNode", "de/d35/classStructDeclarationNode.html", null ],
-        [ "TypeAliasDecl", "d2/daf/classTypeAliasDecl.html", null ],
-        [ "VarDecl", "d0/d3d/classVarDecl.html", null ]
+        [ "TypeAliasDecl", "d2/daf/classTypeAliasDecl.html", null ]
       ] ],
       [ "TypeNode", "d7/d9f/classTypeNode.html", null ]
     ] ],
