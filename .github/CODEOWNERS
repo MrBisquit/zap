@@ -10,3 +10,10 @@ src/lsp @iDontHaveTime @thezaplang/Maintainers
 
 # GitHub config stuff
 .github @MrBisquit @thezaplang/Maintainers
+
+# Doxygen and documentation
+Doxygen @MrBisquit @thezaplang/Maintainers
+docs @funcieqDEV @MrBisquit @thezaplang/Maintainers
+
+# Tests
+tests @funcieqDEV @MrBisquit @Maqi-X @iDontHaveTime @thezaplang/Maintainers
