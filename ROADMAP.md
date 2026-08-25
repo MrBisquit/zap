@@ -6,4 +6,4 @@
 - [x] split stdlib.c into more files
 - [x] std/term (changing cursor position, changing colors in the terminal etc)
 - [x] immutable variables
-- [ ] simple pattern matching
+- [x] simple pattern matching
