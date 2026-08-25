@@ -1,9 +1,16 @@
 # Zap Roadmap
 
-## Zap v0.4.1
+## Zap v0.5.0
 
-- [x] all functions/methods that are not used but are imported are not included in ZIR
-- [x] split stdlib.c into more files
-- [x] std/term (changing cursor position, changing colors in the terminal etc)
-- [x] immutable variables
-- [x] simple pattern matching
+- [ ] implicit cast `*T` -> `*Void` when needed
+- [ ] attribute system, i.e. the ability to define your own attributes
+- [ ] macros
+- [ ] String interpolation
+- [ ] custom methods for primitive types
+- [ ] rewriting std/io, std/collection, std/json, std/fs, std/http and std/tls using macros, native error handling
+- [ ] New stdlib modules:
+    - [ ] std/sort
+    - [ ] std/url
+    - [ ] std/time
+    - [ ] std/c with C compatible types, e.g. c.int, c.size_t, c.longlong
+- [ ] Neovim support
