@@ -57,6 +57,138 @@ SPECIAL_CASES = {
         "diagnostics": ["S2015"],
         "desc": "Const bindings reject runtime initializers"
     },
+    "tests/case_incomplete_enum_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "requires an 'else' arm unless its patterns are exhaustive",
+        "desc": "Case requires exhaustive enum coverage or else"
+    },
+    "tests/case_else_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "Case arm after 'else' is unreachable",
+        "desc": "Case rejects arms after else"
+    },
+    "tests/case_variant_owner_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "Case variant does not belong to scrutinee type",
+        "desc": "Case resolves a variant against the scrutinee enum"
+    },
+    "tests/case_empty_payload_arity_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "does not take a payload pattern",
+        "desc": "Case rejects bindings for empty tagged-union variants"
+    },
+    "tests/case_value_payload_arity_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "expects one payload pattern",
+        "desc": "Case requires a binding or wildcard for payload variants"
+    },
+    "tests/case_payload_scope_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "Undefined identifier: value",
+        "desc": "Case payload bindings are scoped to their arm"
+    },
+    "tests/case_payload_literal_duplicate_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "Duplicate case pattern",
+        "desc": "Case rejects duplicate literal payload patterns"
+    },
+    "tests/case_uint64_duplicate_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "Duplicate case pattern",
+        "desc": "Case canonicalizes full-width UInt64 patterns across bases"
+    },
+    "tests/case_uint64_record_duplicate_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "Duplicate case pattern",
+        "desc": "Case canonicalizes full-width UInt64 record patterns across bases"
+    },
+    "tests/case_uint64_record_payload_duplicate_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "Duplicate case pattern",
+        "desc": "Case canonicalizes UInt64 record payload patterns across bases"
+    },
+    "tests/case_record_invalid_pattern_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "has no field 'nope'",
+        "stderr_absent_pattern": "Duplicate case pattern",
+        "desc": "Invalid record patterns do not poison duplicate detection"
+    },
+    "tests/case_uint64_overflow_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "Invalid integer literal",
+        "desc": "Case rejects integer literals wider than UInt64"
+    },
+    "tests/case_payload_literal_unreachable_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "earlier pattern covers this variant",
+        "desc": "Case rejects payload patterns after a catch-all variant"
+    },
+    "tests/case_payload_record_alternative_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "payload bindings cannot have alternatives",
+        "desc": "Case rejects record payload bindings in alternatives"
+    },
+    "tests/case_payload_record_type_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "record pattern does not match payload type",
+        "desc": "Case checks a record payload pattern against its payload type"
+    },
+    "tests/case_payload_record_duplicate_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "Duplicate case pattern",
+        "desc": "Case rejects duplicate constrained record payload patterns"
+    },
+    "tests/case_record_incomplete_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "requires an 'else' arm unless its patterns are exhaustive",
+        "desc": "Refutable record patterns require else"
+    },
+    "tests/case_record_else_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "'else' case arm is unreachable because earlier patterns are exhaustive",
+        "desc": "Irrefutable record patterns make else unreachable"
+    },
+    "tests/case_record_payload_variant_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "payload pattern is not representable",
+        "desc": "Record patterns check tagged-union literal payload types"
+    },
+    "tests/case_record_payload_scope_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "Undefined identifier: value",
+        "desc": "Record payload bindings are scoped to their arm"
+    },
+    "tests/case_record_empty_variant_arity_error.zp": {
+        "type": "compile",
+        "exit": 1,
+        "stderr_pattern": "Invalid enum field pattern for 'result'",
+        "desc": "Record patterns reject bindings for empty tagged-union variants"
+    },
+    "tests/case_payload_qualified_record/main.zp": {
+        "type": "runtime",
+        "exit": 0,
+        "desc": "Case destructures an imported record payload"
+    },
 
     # Compile-only exit 1 (non-matching filename)
     "tests/import_module_alias_conflict/main.zp": {"type": "compile", "exit": 1, "desc": "Different modules cannot reuse the same alias"},
@@ -402,6 +534,7 @@ def execute_test(test_item, zapc_path):
     run_args = test_item.get("run_args", [])
     expected_stdout = test_item.get("stdout", None)
     stderr_pattern = test_item.get("stderr_pattern", None)
+    stderr_absent_pattern = test_item.get("stderr_absent_pattern", None)
     diagnostics = test_item.get("diagnostics", [])
     output_file = test_item.get("output_file", None)
     output_patterns = test_item.get("output_patterns", [])
@@ -471,7 +604,10 @@ def execute_test(test_item, zapc_path):
 
             if stderr_pattern:
                 if stderr_pattern.lower() not in res.stderr.lower():
-                    return False, f"Expected warning pattern '{stderr_pattern}' not found in stderr:\n{res.stderr}"
+                    return False, f"Expected stderr pattern '{stderr_pattern}' not found in stderr:\n{res.stderr}"
+            if stderr_absent_pattern:
+                if stderr_absent_pattern.lower() in res.stderr.lower():
+                    return False, f"Unexpected stderr pattern '{stderr_absent_pattern}' found in stderr:\n{res.stderr}"
 
             return True, None
 

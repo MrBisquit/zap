@@ -82,6 +82,7 @@ public:
   void visit(ConstInt &node) override;
   void visit(ConstBool &node) override;
   void visit(IfNode &node) override;
+  void visit(CaseNode &node) override;
   void visit(IfTypeNode &node) override;
   void visit(DeferNode &node) override;
   void visit(WhileNode &node) override;
@@ -116,6 +117,12 @@ public:
   void visit(FailNode &node) override;
 
 private:
+  struct RecordPatternResult {
+    std::unique_ptr<BoundCasePattern> pattern;
+    std::vector<std::shared_ptr<VariableSymbol>> bindings;
+    bool valid = true;
+  };
+
   enum class MutablePlaceUse {
     Assignment,
     MutableReference,
@@ -288,6 +295,17 @@ private:
   bool bindWeakBuiltinCall(FunCall &node);
   int typeBitWidth(std::shared_ptr<zir::Type> type) const;
   std::unique_ptr<BoundBlock> bindBody(BodyNode *body, bool createScope);
+  std::unique_ptr<BoundBlock> bindCaseArmBody(
+      const CaseArm &arm, const std::shared_ptr<VariableSymbol> &payloadBinding,
+      const std::vector<std::shared_ptr<VariableSymbol>> &recordBindings);
+  bool
+  hasExhaustiveCaseCoverage(const std::shared_ptr<zir::Type> &scrutineeType,
+                            const std::unordered_set<int64_t> &coveredVariants,
+                            bool hasIrrefutableRecordPattern) const;
+  RecordPatternResult
+  bindCaseRecordPattern(const CasePattern &record,
+                        std::shared_ptr<zir::RecordType> type);
+  void bindCaseStatement(CaseNode &node);
   void initializeBuiltins();
   void predeclareModuleTypes(ModuleState &module);
   void predeclareModuleAliases(ModuleState &module);

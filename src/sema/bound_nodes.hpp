@@ -34,6 +34,7 @@ class BoundStructLiteral;
 class BoundTaggedUnionLiteral;
 class BoundModuleReference;
 class BoundIfStatement;
+class BoundCaseStatement;
 class BoundWhileStatement;
 class BoundForStatement;
 class BoundBreakStatement;
@@ -82,6 +83,7 @@ public:
   virtual void visit(BoundTaggedUnionLiteral &node) = 0;
   virtual void visit(BoundModuleReference &node) = 0;
   virtual void visit(BoundIfStatement &node) = 0;
+  virtual void visit(BoundCaseStatement &node) = 0;
   virtual void visit(BoundWhileStatement &node) = 0;
   virtual void visit(BoundForStatement &node) = 0;
   virtual void visit(BoundBreakStatement &node) = 0;
@@ -564,6 +566,126 @@ public:
         condition->clone(), thenBody->cloneBlock(),
         elseBody ? elseBody->cloneBlock() : nullptr, narrowedSource,
         narrowedVariable);
+  }
+};
+
+enum class BoundCasePatternKind {
+  Literal,
+  EnumVariant,
+  TaggedUnionVariant,
+  Record,
+};
+
+class BoundCasePattern;
+
+struct BoundCaseRecordField {
+  int index = -1;
+  std::unique_ptr<BoundCasePattern> nested;
+  std::shared_ptr<VariableSymbol> binding;
+};
+
+class BoundCasePattern {
+public:
+  BoundCasePatternKind kind = BoundCasePatternKind::Literal;
+  std::unique_ptr<BoundExpression> value;
+  int64_t variantTag = 0;
+  std::shared_ptr<zir::Type> payloadType;
+  std::unique_ptr<BoundExpression> payloadValue;
+  std::unique_ptr<BoundCasePattern> payloadPattern;
+  std::shared_ptr<VariableSymbol> payloadBinding;
+  std::shared_ptr<zir::RecordType> recordType;
+  std::vector<BoundCaseRecordField> recordFields;
+
+  explicit BoundCasePattern(std::unique_ptr<BoundExpression> patternValue)
+      : value(std::move(patternValue)) {}
+
+  BoundCasePattern(BoundCasePatternKind patternKind, int64_t tag,
+                   std::shared_ptr<zir::Type> payload = nullptr,
+                   std::unique_ptr<BoundExpression> payloadLiteral = nullptr,
+                   std::unique_ptr<BoundCasePattern> nestedPayload = nullptr,
+                   std::shared_ptr<VariableSymbol> binding = nullptr)
+      : kind(patternKind), variantTag(tag), payloadType(std::move(payload)),
+        payloadValue(std::move(payloadLiteral)),
+        payloadPattern(std::move(nestedPayload)),
+        payloadBinding(std::move(binding)) {}
+
+  BoundCasePattern(std::shared_ptr<zir::RecordType> type,
+                   std::vector<BoundCaseRecordField> fields)
+      : kind(BoundCasePatternKind::Record), recordType(std::move(type)),
+        recordFields(std::move(fields)) {}
+
+  BoundCasePattern clone() const {
+    if (kind == BoundCasePatternKind::Literal) {
+      return BoundCasePattern(value ? value->clone() : nullptr);
+    }
+    if (kind == BoundCasePatternKind::Record) {
+      std::vector<BoundCaseRecordField> fields;
+      fields.reserve(recordFields.size());
+      for (const auto &field : recordFields) {
+        fields.push_back({field.index,
+                          field.nested ? std::make_unique<BoundCasePattern>(
+                                             field.nested->clone())
+                                       : nullptr,
+                          field.binding});
+      }
+      return BoundCasePattern(recordType, std::move(fields));
+    }
+    return BoundCasePattern(kind, variantTag, payloadType,
+                            payloadValue ? payloadValue->clone() : nullptr,
+                            payloadPattern ? std::make_unique<BoundCasePattern>(
+                                                 payloadPattern->clone())
+                                           : nullptr,
+                            payloadBinding);
+  }
+};
+
+class BoundCaseArm {
+public:
+  bool isElse = false;
+  std::vector<BoundCasePattern> patterns;
+  std::shared_ptr<VariableSymbol> payloadBinding;
+  std::vector<std::shared_ptr<VariableSymbol>> recordBindings;
+  std::unique_ptr<BoundBlock> body;
+
+  BoundCaseArm(bool wildcard, std::vector<BoundCasePattern> armPatterns,
+               std::shared_ptr<VariableSymbol> binding,
+               std::vector<std::shared_ptr<VariableSymbol>> bindings,
+               std::unique_ptr<BoundBlock> armBody)
+      : isElse(wildcard), patterns(std::move(armPatterns)),
+        payloadBinding(std::move(binding)), recordBindings(std::move(bindings)),
+        body(std::move(armBody)) {}
+
+  BoundCaseArm clone() const {
+    std::vector<BoundCasePattern> clonedPatterns;
+    clonedPatterns.reserve(patterns.size());
+    for (const auto &pattern : patterns) {
+      clonedPatterns.push_back(pattern.clone());
+    }
+    return BoundCaseArm(isElse, std::move(clonedPatterns), payloadBinding,
+                        recordBindings, body ? body->cloneBlock() : nullptr);
+  }
+};
+
+class BoundCaseStatement : public BoundStatement {
+public:
+  std::unique_ptr<BoundExpression> scrutinee;
+  std::vector<BoundCaseArm> arms;
+  bool guaranteesMatch = false;
+
+  BoundCaseStatement(std::unique_ptr<BoundExpression> subject,
+                     std::vector<BoundCaseArm> caseArms, bool guarantees)
+      : scrutinee(std::move(subject)), arms(std::move(caseArms)),
+        guaranteesMatch(guarantees) {}
+
+  void accept(BoundVisitor &v) override { v.visit(*this); }
+  std::unique_ptr<BoundStatement> cloneStatement() const override {
+    std::vector<BoundCaseArm> clonedArms;
+    clonedArms.reserve(arms.size());
+    for (const auto &arm : arms) {
+      clonedArms.push_back(arm.clone());
+    }
+    return std::make_unique<BoundCaseStatement>(
+        scrutinee->clone(), std::move(clonedArms), guaranteesMatch);
   }
 };
 

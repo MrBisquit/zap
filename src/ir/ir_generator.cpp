@@ -1,6 +1,7 @@
 #include "ir_generator.hpp"
 #include "../sema/constant_evaluator.hpp"
 #include "failable_type.hpp"
+#include "string_type.hpp"
 #include <cstdint>
 #include <iostream>
 #include <optional>
@@ -1822,6 +1823,410 @@ void BoundIRGenerator::visit(sema::BoundIfStatement &node) {
 
     actualElseLabel = currentBlock_->label;
 
+    if (!isTerminated(currentBlock_)) {
+      currentBlock_->addInstruction(std::make_unique<BranchInst>(mergeLabel));
+    }
+  }
+
+  auto mergeBlock = std::make_unique<BasicBlock>(mergeLabel);
+  auto *mergeBlockPtr = mergeBlock.get();
+  currentFunction_->addBlock(std::move(mergeBlock));
+  currentBlock_ = mergeBlockPtr;
+}
+
+void BoundIRGenerator::emitCaseRecordTest(const sema::BoundCasePattern &record,
+                                          const std::shared_ptr<Value> &address,
+                                          const std::string &successLabel,
+                                          const std::string &failureLabel) {
+  std::vector<const sema::BoundCaseRecordField *> constrainedFields;
+  for (const auto &field : record.recordFields) {
+    if (field.nested) {
+      constrainedFields.push_back(&field);
+    }
+  }
+  for (size_t fieldIndex = 0; fieldIndex < constrainedFields.size();
+       ++fieldIndex) {
+    const auto &field = *constrainedFields[fieldIndex];
+    const auto nextLabel = fieldIndex + 1 == constrainedFields.size()
+                               ? successLabel
+                               : createBlockLabel("case.record.next");
+    const auto fieldType = record.recordType->getFields()[field.index].type;
+    auto fieldAddress =
+        createRegister(std::make_shared<PointerType>(fieldType));
+    currentBlock_->addInstruction(std::make_unique<GetElementPtrInst>(
+        fieldAddress, address, field.index));
+    if (field.nested->kind == sema::BoundCasePatternKind::Record) {
+      emitCaseRecordTest(*field.nested, fieldAddress, nextLabel, failureLabel);
+    } else if (field.nested->kind ==
+               sema::BoundCasePatternKind::TaggedUnionVariant) {
+      auto tagType = std::make_shared<PrimitiveType>(TypeKind::Int32);
+      auto tagAddress = createRegister(std::make_shared<PointerType>(tagType));
+      currentBlock_->addInstruction(
+          std::make_unique<GetElementPtrInst>(tagAddress, fieldAddress, 0));
+      auto tag = createRegister(tagType);
+      currentBlock_->addInstruction(
+          std::make_unique<LoadInst>(tag, tagAddress));
+      auto expectedTag = std::make_shared<Constant>(
+          std::to_string(field.nested->variantTag), tagType);
+      auto tagMatches =
+          createRegister(std::make_shared<PrimitiveType>(TypeKind::Bool));
+      currentBlock_->addInstruction(
+          std::make_unique<CmpInst>("eq", tagMatches, tag, expectedTag));
+      if (!field.nested->payloadValue && !field.nested->payloadPattern) {
+        currentBlock_->addInstruction(std::make_unique<CondBranchInst>(
+            tagMatches, nextLabel, failureLabel));
+      } else {
+        const auto payloadLabel = createBlockLabel("case.payload");
+        currentBlock_->addInstruction(std::make_unique<CondBranchInst>(
+            tagMatches, payloadLabel, failureLabel));
+        auto payloadBlock = std::make_unique<BasicBlock>(payloadLabel);
+        auto *payloadBlockPtr = payloadBlock.get();
+        currentFunction_->addBlock(std::move(payloadBlock));
+        currentBlock_ = payloadBlockPtr;
+        auto payloadAddress = createRegister(
+            std::make_shared<PointerType>(field.nested->payloadType));
+        currentBlock_->addInstruction(std::make_unique<GetElementPtrInst>(
+            payloadAddress, fieldAddress, 1));
+        if (field.nested->payloadPattern) {
+          emitCaseRecordTest(*field.nested->payloadPattern, payloadAddress,
+                             nextLabel, failureLabel);
+        } else {
+          auto payload = createRegister(field.nested->payloadType);
+          currentBlock_->addInstruction(
+              std::make_unique<LoadInst>(payload, payloadAddress));
+          if (field.nested->payloadValue->type->getIntrinsicKind() ==
+                  IntrinsicTypeKind::StringView &&
+              payload->getType()->getIntrinsicKind() ==
+                  IntrinsicTypeKind::String) {
+            auto payloadView = createRegister(field.nested->payloadValue->type,
+                                              ValueOwnership::Borrowed);
+            currentBlock_->addInstruction(
+                std::make_unique<BorrowInst>(payloadView, payload));
+            payload = std::move(payloadView);
+          }
+          field.nested->payloadValue->accept(*this);
+          auto expectedPayload = valueStack_.top();
+          valueStack_.pop();
+          auto payloadMatches =
+              createRegister(std::make_shared<PrimitiveType>(TypeKind::Bool));
+          currentBlock_->addInstruction(std::make_unique<CmpInst>(
+              "eq", payloadMatches, payload, expectedPayload));
+          currentBlock_->addInstruction(std::make_unique<CondBranchInst>(
+              payloadMatches, nextLabel, failureLabel));
+        }
+      }
+    } else {
+      auto fieldValue = createRegister(fieldType);
+      auto fieldMatches =
+          createRegister(std::make_shared<PrimitiveType>(TypeKind::Bool));
+      currentBlock_->addInstruction(
+          std::make_unique<LoadInst>(fieldValue, fieldAddress));
+      if (field.nested->kind == sema::BoundCasePatternKind::EnumVariant) {
+        auto expected = std::make_shared<Constant>(
+            std::to_string(field.nested->variantTag), fieldType);
+        currentBlock_->addInstruction(std::make_unique<CmpInst>(
+            "eq", fieldMatches, fieldValue, expected));
+      } else {
+        field.nested->value->accept(*this);
+        auto expected = valueStack_.top();
+        valueStack_.pop();
+        currentBlock_->addInstruction(std::make_unique<CmpInst>(
+            "eq", fieldMatches, fieldValue, expected));
+      }
+      currentBlock_->addInstruction(std::make_unique<CondBranchInst>(
+          fieldMatches, nextLabel, failureLabel));
+    }
+    if (fieldIndex + 1 < constrainedFields.size()) {
+      auto nextBlock = std::make_unique<BasicBlock>(nextLabel);
+      auto *nextBlockPtr = nextBlock.get();
+      currentFunction_->addBlock(std::move(nextBlock));
+      currentBlock_ = nextBlockPtr;
+    }
+  }
+  if (constrainedFields.empty()) {
+    currentBlock_->addInstruction(std::make_unique<BranchInst>(successLabel));
+  }
+}
+
+void BoundIRGenerator::materializeCaseRecordBindings(
+    const sema::BoundCasePattern &pattern,
+    const std::shared_ptr<Value> &address) {
+  for (const auto &field : pattern.recordFields) {
+    const auto fieldType = pattern.recordType->getFields()[field.index].type;
+    auto fieldAddress =
+        createRegister(std::make_shared<PointerType>(fieldType));
+    currentBlock_->addInstruction(std::make_unique<GetElementPtrInst>(
+        fieldAddress, address, field.index));
+    if (field.nested &&
+        field.nested->kind == sema::BoundCasePatternKind::Record) {
+      materializeCaseRecordBindings(*field.nested, fieldAddress);
+      continue;
+    }
+    if (field.nested &&
+        field.nested->kind == sema::BoundCasePatternKind::TaggedUnionVariant &&
+        field.nested->payloadBinding) {
+      const auto &payloadPattern = *field.nested;
+      auto payloadAddress = createRegister(
+          std::make_shared<PointerType>(payloadPattern.payloadType));
+      currentBlock_->addInstruction(
+          std::make_unique<GetElementPtrInst>(payloadAddress, fieldAddress, 1));
+      auto payload = createRegister(payloadPattern.payloadType);
+      currentBlock_->addInstruction(
+          std::make_unique<LoadInst>(payload, payloadAddress));
+      auto bindingAddress = createRegister(
+          std::make_shared<PointerType>(payloadPattern.payloadBinding->type));
+      currentBlock_->addInstruction(std::make_unique<AllocaInst>(
+          bindingAddress, payloadPattern.payloadBinding->type));
+      emitInitializationStore(std::move(payload), bindingAddress);
+      symbolMap_[payloadPattern.payloadBinding] = bindingAddress;
+    }
+    if (field.nested &&
+        field.nested->kind == sema::BoundCasePatternKind::TaggedUnionVariant &&
+        field.nested->payloadPattern) {
+      const auto &payloadPattern = *field.nested;
+      auto payloadAddress = createRegister(
+          std::make_shared<PointerType>(payloadPattern.payloadType));
+      currentBlock_->addInstruction(
+          std::make_unique<GetElementPtrInst>(payloadAddress, fieldAddress, 1));
+      materializeCaseRecordBindings(*payloadPattern.payloadPattern,
+                                    payloadAddress);
+    }
+    if (!field.binding) {
+      continue;
+    }
+    auto value = createRegister(field.binding->type);
+    currentBlock_->addInstruction(
+        std::make_unique<LoadInst>(value, fieldAddress));
+    auto bindingAddress =
+        createRegister(std::make_shared<PointerType>(field.binding->type));
+    currentBlock_->addInstruction(
+        std::make_unique<AllocaInst>(bindingAddress, field.binding->type));
+    emitInitializationStore(std::move(value), bindingAddress);
+    symbolMap_[field.binding] = bindingAddress;
+  }
+}
+
+void BoundIRGenerator::materializeCasePayloadBinding(
+    const sema::BoundCaseArm &arm,
+    const std::shared_ptr<Value> &taggedUnionAddress) {
+  if (!arm.payloadBinding) {
+    return;
+  }
+
+  const auto &pattern = arm.patterns.front();
+  auto payloadAddress =
+      createRegister(std::make_shared<PointerType>(pattern.payloadType));
+  currentBlock_->addInstruction(std::make_unique<GetElementPtrInst>(
+      payloadAddress, taggedUnionAddress, 1));
+  auto payload = createRegister(pattern.payloadType);
+  currentBlock_->addInstruction(
+      std::make_unique<LoadInst>(payload, payloadAddress));
+
+  auto bindingAddress =
+      createRegister(std::make_shared<PointerType>(arm.payloadBinding->type));
+  currentBlock_->addInstruction(
+      std::make_unique<AllocaInst>(bindingAddress, arm.payloadBinding->type));
+  emitInitializationStore(std::move(payload), bindingAddress);
+  symbolMap_[arm.payloadBinding] = bindingAddress;
+}
+
+void BoundIRGenerator::visit(sema::BoundCaseStatement &node) {
+  node.scrutinee->accept(*this);
+  auto scrutinee = valueStack_.top();
+  valueStack_.pop();
+
+  const bool isTaggedUnion =
+      node.scrutinee->type->getKind() == TypeKind::TaggedUnion;
+  const bool isRecord = node.scrutinee->type->getKind() == TypeKind::Record &&
+                        !isIntrinsicStringType(node.scrutinee->type);
+  std::shared_ptr<Value> taggedUnionAddress;
+  std::shared_ptr<Value> recordAddress;
+  if (isTaggedUnion) {
+    taggedUnionAddress =
+        createRegister(std::make_shared<PointerType>(node.scrutinee->type));
+    currentBlock_->addInstruction(
+        std::make_unique<AllocaInst>(taggedUnionAddress, node.scrutinee->type));
+    emitInitializationStore(std::move(scrutinee), taggedUnionAddress);
+  } else if (isRecord) {
+    recordAddress =
+        createRegister(std::make_shared<PointerType>(node.scrutinee->type));
+    currentBlock_->addInstruction(
+        std::make_unique<AllocaInst>(recordAddress, node.scrutinee->type));
+    emitInitializationStore(std::move(scrutinee), recordAddress);
+  }
+
+  std::vector<std::string> bodyLabels;
+  bodyLabels.reserve(node.arms.size());
+  std::vector<std::string> testLabels;
+  for (const auto &arm : node.arms) {
+    bodyLabels.push_back(createBlockLabel("case.arm"));
+    for (size_t i = 0; i < arm.patterns.size(); ++i) {
+      testLabels.push_back(createBlockLabel("case.test"));
+    }
+  }
+  const auto mergeLabel = createBlockLabel("case.merge");
+
+  std::string fallbackLabel;
+  size_t testCount = 0;
+  for (size_t armIndex = 0; armIndex < node.arms.size(); ++armIndex) {
+    const auto &arm = node.arms[armIndex];
+    if (arm.isElse) {
+      fallbackLabel = bodyLabels[armIndex];
+      break;
+    }
+    testCount += arm.patterns.size();
+  }
+
+  if (fallbackLabel.empty()) {
+    fallbackLabel = mergeLabel;
+  }
+
+  if (testCount == 0) {
+    currentBlock_->addInstruction(std::make_unique<BranchInst>(fallbackLabel));
+  } else {
+    currentBlock_->addInstruction(std::make_unique<BranchInst>(testLabels[0]));
+  }
+
+  size_t nextTest = 0;
+  for (size_t armIndex = 0; armIndex < node.arms.size(); ++armIndex) {
+    const auto &arm = node.arms[armIndex];
+    if (arm.isElse) {
+      continue;
+    }
+
+    for (const auto &pattern : arm.patterns) {
+      auto testBlock = std::make_unique<BasicBlock>(testLabels[nextTest]);
+      auto *testBlockPtr = testBlock.get();
+      currentFunction_->addBlock(std::move(testBlock));
+      currentBlock_ = testBlockPtr;
+
+      auto comparison =
+          createRegister(std::make_shared<PrimitiveType>(TypeKind::Bool));
+      bool recordEmitsBranch = false;
+      if (pattern.kind == sema::BoundCasePatternKind::Literal) {
+        pattern.value->accept(*this);
+        auto patternValue = valueStack_.top();
+        valueStack_.pop();
+        currentBlock_->addInstruction(std::make_unique<CmpInst>(
+            "eq", comparison, scrutinee, patternValue));
+      } else if (pattern.kind == sema::BoundCasePatternKind::EnumVariant) {
+        auto patternValue = std::make_shared<Constant>(
+            std::to_string(pattern.variantTag), node.scrutinee->type);
+        currentBlock_->addInstruction(std::make_unique<CmpInst>(
+            "eq", comparison, scrutinee, patternValue));
+      } else if (pattern.kind ==
+                 sema::BoundCasePatternKind::TaggedUnionVariant) {
+        auto tagType = std::make_shared<PrimitiveType>(TypeKind::Int32);
+        auto tagAddress =
+            createRegister(std::make_shared<PointerType>(tagType));
+        currentBlock_->addInstruction(std::make_unique<GetElementPtrInst>(
+            tagAddress, taggedUnionAddress, 0));
+        auto tag = createRegister(tagType);
+        currentBlock_->addInstruction(
+            std::make_unique<LoadInst>(tag, tagAddress));
+        auto patternTag = std::make_shared<Constant>(
+            std::to_string(pattern.variantTag), tagType);
+        currentBlock_->addInstruction(
+            std::make_unique<CmpInst>("eq", comparison, tag, patternTag));
+        if (pattern.payloadValue || pattern.payloadPattern) {
+          const auto payloadTestLabel = createBlockLabel("case.payload");
+          const auto followingTest = nextTest + 1;
+          const auto tagMismatchLabel = followingTest < testCount
+                                            ? testLabels[followingTest]
+                                            : fallbackLabel;
+          currentBlock_->addInstruction(std::make_unique<CondBranchInst>(
+              comparison, payloadTestLabel, tagMismatchLabel));
+
+          auto payloadTestBlock =
+              std::make_unique<BasicBlock>(payloadTestLabel);
+          auto *payloadTestBlockPtr = payloadTestBlock.get();
+          currentFunction_->addBlock(std::move(payloadTestBlock));
+          currentBlock_ = payloadTestBlockPtr;
+
+          auto payloadAddress = createRegister(
+              std::make_shared<PointerType>(pattern.payloadType));
+          currentBlock_->addInstruction(std::make_unique<GetElementPtrInst>(
+              payloadAddress, taggedUnionAddress, 1));
+          if (pattern.payloadPattern) {
+            emitCaseRecordTest(*pattern.payloadPattern, payloadAddress,
+                               bodyLabels[armIndex], tagMismatchLabel);
+            recordEmitsBranch = true;
+          } else {
+            auto payload = createRegister(pattern.payloadType);
+            currentBlock_->addInstruction(
+                std::make_unique<LoadInst>(payload, payloadAddress));
+            if (pattern.payloadValue->type->getIntrinsicKind() ==
+                    IntrinsicTypeKind::StringView &&
+                payload->getType()->getIntrinsicKind() ==
+                    IntrinsicTypeKind::String) {
+              auto payloadView = createRegister(pattern.payloadValue->type,
+                                                ValueOwnership::Borrowed);
+              currentBlock_->addInstruction(
+                  std::make_unique<BorrowInst>(payloadView, payload));
+              payload = std::move(payloadView);
+            }
+            pattern.payloadValue->accept(*this);
+            auto expectedPayload = valueStack_.top();
+            valueStack_.pop();
+            auto payloadMatches =
+                createRegister(std::make_shared<PrimitiveType>(TypeKind::Bool));
+            currentBlock_->addInstruction(std::make_unique<CmpInst>(
+                "eq", payloadMatches, payload, expectedPayload));
+            comparison = std::move(payloadMatches);
+          }
+        }
+      } else {
+        const auto followingTest = nextTest + 1;
+        const auto failureLabel = followingTest < testCount
+                                      ? testLabels[followingTest]
+                                      : fallbackLabel;
+        emitCaseRecordTest(pattern, recordAddress, bodyLabels[armIndex],
+                           failureLabel);
+        recordEmitsBranch = true;
+      }
+
+      ++nextTest;
+      const auto nextLabel =
+          nextTest < testCount ? testLabels[nextTest] : fallbackLabel;
+      if (!recordEmitsBranch) {
+        currentBlock_->addInstruction(std::make_unique<CondBranchInst>(
+            comparison, bodyLabels[armIndex], nextLabel));
+      }
+    }
+  }
+
+  for (size_t armIndex = 0; armIndex < node.arms.size(); ++armIndex) {
+    auto bodyBlock = std::make_unique<BasicBlock>(bodyLabels[armIndex]);
+    auto *bodyBlockPtr = bodyBlock.get();
+    currentFunction_->addBlock(std::move(bodyBlock));
+    currentBlock_ = bodyBlockPtr;
+
+    const auto &arm = node.arms[armIndex];
+    if (!arm.patterns.empty() &&
+        arm.patterns.front().kind == sema::BoundCasePatternKind::Record) {
+      materializeCaseRecordBindings(arm.patterns.front(), recordAddress);
+    }
+    if (!arm.patterns.empty() &&
+        arm.patterns.front().kind ==
+            sema::BoundCasePatternKind::TaggedUnionVariant &&
+        arm.patterns.front().payloadPattern) {
+      const auto &pattern = arm.patterns.front();
+      auto payloadAddress =
+          createRegister(std::make_shared<PointerType>(pattern.payloadType));
+      currentBlock_->addInstruction(std::make_unique<GetElementPtrInst>(
+          payloadAddress, taggedUnionAddress, 1));
+      materializeCaseRecordBindings(*pattern.payloadPattern, payloadAddress);
+    }
+    materializeCasePayloadBinding(arm, taggedUnionAddress);
+    if (arm.body) {
+      arm.body->accept(*this);
+    }
+    if (arm.payloadBinding) {
+      symbolMap_.erase(arm.payloadBinding);
+    }
+    for (const auto &binding : arm.recordBindings) {
+      symbolMap_.erase(binding);
+    }
     if (!isTerminated(currentBlock_)) {
       currentBlock_->addInstruction(std::make_unique<BranchInst>(mergeLabel));
     }

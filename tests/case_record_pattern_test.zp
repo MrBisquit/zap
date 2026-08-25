@@ -1,0 +1,151 @@
+record Address {
+    city: Int,
+}
+
+record User {
+    id: Int,
+    address: Address,
+}
+
+struct Point {
+    x: Int,
+    y: Int,
+}
+
+enum Status { Active, Inactive }
+enum Result { Empty, Value(Int) }
+enum UserResult { Empty, Value(User) }
+enum TextResult { Empty, Value(String) }
+
+record Account {
+    status: Status,
+    balance: Int,
+}
+
+record Response {
+    result: Result,
+    code: Int,
+}
+
+record UserResponse {
+    result: UserResult,
+    code: Int,
+}
+
+record TextResponse {
+    result: TextResult,
+}
+
+fun readUser(user: User) Int {
+    case user {
+        User { id, address: Address { city } } {
+            return id + city;
+        }
+    }
+}
+
+fun readPoint(point: Point) Int {
+    case point {
+        Point { x: 0 } {
+            return 100;
+        }
+        Point { x, y } {
+            return x + y;
+        }
+    }
+}
+
+fun readAccount(account: Account) Int {
+    case account {
+        Account { status: Status.Active, balance } { return balance; }
+        Account { balance } { return 0 - balance; }
+    }
+}
+
+fun readResponse(response: Response) Int {
+    case response {
+        Response { result: Result.Value(42), code } { return code + 42; }
+        Response { result: Result.Value(value), code } {
+            return value + code;
+        }
+        Response { result: Result.Empty(), code } { return code; }
+        Response { code } { return 0 - code; }
+    }
+}
+
+fun isValue(response: Response) Int {
+    case response {
+        Response { result: Result.Value(_) } { return 1; }
+        else { return 0; }
+    }
+}
+
+fun readUserResponse(response: UserResponse) Int {
+    case response {
+        UserResponse {
+            result: UserResult.Value(User { id: 1, address: Address { city } }),
+            code,
+        } {
+            return city + code;
+        }
+        else { return 0; }
+    }
+}
+
+fun isConstrainedUser(response: UserResponse) Int {
+    case response {
+        UserResponse {
+            result: UserResult.Value(User {
+                id: 1,
+                address: Address { city: 40 },
+            }),
+            code,
+        } { return code; }
+        else { return 0; }
+    }
+}
+
+fun isZap(response: TextResponse) Int {
+    case response {
+        TextResponse { result: TextResult.Value("zap") } { return 1; }
+        else { return 0; }
+    }
+}
+
+fun main() Int {
+    var user: User = User{id: 2, address: Address{city: 40}};
+    var point: Point = Point{x: 10, y: 20};
+    if readUser(user) != 42 { return 1; }
+    if readPoint(point) != 30 { return 2; }
+    var origin: Point = Point{x: 0, y: 99};
+    if readPoint(origin) != 100 { return 3; }
+    var active: Account = Account{status: Status.Active, balance: 7};
+    var inactive: Account = Account{status: Status.Inactive, balance: 7};
+    if readAccount(active) != 7 { return 4; }
+    if readAccount(inactive) != -7 { return 5; }
+    var empty: Response = Response{result: Result.Empty(), code: 9};
+    var value: Response = Response{result: Result.Value(4), code: 9};
+    if readResponse(empty) != 9 { return 6; }
+    if readResponse(value) != 13 { return 7; }
+    if isValue(empty) != 0 { return 8; }
+    if isValue(value) != 1 { return 9; }
+    var userResponse: UserResponse = UserResponse{
+        result: UserResult.Value((User{id: 1, address: Address{city: 40}})),
+        code: 1,
+    };
+    if readUserResponse(userResponse) != 41 { return 10; }
+    var constrained: Response = Response{result: Result.Value(42), code: 0};
+    if readResponse(constrained) != 42 { return 11; }
+    var otherUserResponse: UserResponse = UserResponse{
+        result: UserResult.Value((User{id: 2, address: Address{city: 40}})),
+        code: 1,
+    };
+    if readUserResponse(otherUserResponse) != 0 { return 12; }
+    if isConstrainedUser(userResponse) != 1 { return 13; }
+    if isConstrainedUser(otherUserResponse) != 0 { return 14; }
+    var zap: TextResponse = TextResponse{result: TextResult.Value("zap")};
+    var other: TextResponse = TextResponse{result: TextResult.Value("other")};
+    if isZap(zap) != 1 { return 15; }
+    if isZap(other) != 0 { return 16; }
+    return 0;
+}
