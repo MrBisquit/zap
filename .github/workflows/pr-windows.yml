@@ -24,10 +24,9 @@ jobs:
           pip install meson ninja
 
       - name: Install LLVM
-        shell: pwsh
-        run: |
-          choco install llvm --yes --no-progress
-          echo "C:\Program Files\LLVM\bin" >> $env:GITHUB_PATH
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: "21.0"
 
       - name: Build project
         shell: bash
