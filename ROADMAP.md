@@ -2,7 +2,7 @@
 
 ## Zap v0.5.0
 
-- [ ] implicit cast `*T` -> `*Void` when needed
+- [x] implicit cast `*T` -> `*Void` when needed
 - [ ] attribute system, i.e. the ability to define your own attributes
 - [ ] macros
 - [ ] String interpolation
@@ -12,5 +12,5 @@
     - [ ] std/sort
     - [ ] std/url
     - [ ] std/time
-    - [ ] std/c with C compatible types, e.g. c.int, c.size_t, c.longlong
+    - [x] std/c with C compatible types, e.g. c.int, c.size_t, c.longlong
 - [ ] Neovim support

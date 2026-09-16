@@ -22,19 +22,27 @@ if get_option('zap_enable_sanitizers')
     add_project_link_arguments('-fsanitize=address,undefined', language : ['c', 'cpp'])
 endif
 
-zap_stdlib_compile_defs = []
-if get_option('zap_enable_runtime_instrumentation')
-    zap_stdlib_compile_defs += '-DZAP_RUNTIME_INSTRUMENTATION=1'
-    add_project_arguments('-DZAP_RUNTIME_INSTRUMENTATION=1', language : ['c', 'cpp'])
-endif
+if get_option('build_compiler')
+    zap_stdlib_compile_defs = []
+    if get_option('zap_enable_runtime_instrumentation')
+        zap_stdlib_compile_defs += '-DZAP_RUNTIME_INSTRUMENTATION=1'
+        add_project_arguments('-DZAP_RUNTIME_INSTRUMENTATION=1', language : ['c', 'cpp'])
+    endif
 
-llvm_dep = dependency('llvm',
-                      version : '>= 21',
-                      modules : ['core', 'support', 'all-targets', 'mc', 'target', 'analysis', 'passes'],
-                      required : true
-)
-openssl_dep = dependency('openssl', required : true)
-m_dep = c.find_library('m', required : false)
+    runtime_compile_args = zap_stdlib_compile_defs
+    if host_machine.system() != 'windows'
+        runtime_compile_args += '-fPIC'
+    endif
+
+    llvm_dep = dependency('llvm',
+                          version : '>= 21',
+                          modules : ['core', 'support', 'all-targets', 'mc', 'target', 'analysis', 'passes'],
+                          required : true
+    )
+    openssl_dep = dependency('openssl', required : true)
+    m_dep = c.find_library('m', required : false)
+
+endif
 
 inc = include_directories('src')
 tomlc17_inc = include_directories('third_party/tomlc17/src')
@@ -44,6 +52,12 @@ tomlc17 = static_library('tomlc17',
                          include_directories : tomlc17_inc)
 tomlc17_dep = declare_dependency(link_with : tomlc17,
                                  include_directories : tomlc17_inc)
+
+zap_support = static_library('zap_support',
+                             'src/utils/stream.cpp',
+                             include_directories : inc
+)
+zap_support_dep = declare_dependency(link_with : zap_support, include_directories : inc)
 
 zap_type_system = static_library('zap_type_system',
                                  'src/ir/failable_type.cpp',
@@ -67,10 +81,29 @@ zap_type_layout = static_library('zap_type_layout',
 )
 zap_type_layout_dep = declare_dependency(link_with : zap_type_layout, include_directories : inc)
 
+zap_sema = static_library('zap_sema',
+                          'src/sema/binder.cpp',
+                          'src/sema/binder_calls.cpp',
+                          'src/sema/binder_conversions.cpp',
+                          'src/sema/binder_declaration_binding.cpp',
+                          'src/sema/binder_module_predeclare.cpp',
+                          'src/sema/binder_stmts.cpp',
+                          'src/sema/binder_exprs.cpp',
+                          'src/sema/binder_mutability.cpp',
+                          'src/sema/constant_evaluator.cpp',
+                          'src/sema/binder_generic_functions.cpp',
+                          'src/sema/binder_generic_types.cpp',
+                          'src/sema/binder_types.cpp',
+                          dependencies : [zap_sema_conversions_dep, zap_type_layout_dep, zap_support_dep],
+                          include_directories : inc
+)
+zap_sema_dep = declare_dependency(link_with : zap_sema, include_directories : inc)
+
 zap_syntax = static_library('zap_syntax',
                             'src/lexer/lexer.cpp',
                             'src/parser/parser.cpp',
                             'src/parser/parser_declarations.cpp',
+                            dependencies : zap_support_dep,
                             include_directories : inc
 )
 zap_syntax_dep = declare_dependency(link_with : zap_syntax, include_directories : inc)
@@ -79,82 +112,77 @@ zap_frontend = static_library('zap_frontend',
                               'src/frontend/frontend_session.cpp',
                               'src/frontend/module_loader.cpp',
                               'src/frontend/project_configuration.cpp',
-                              dependencies : [zap_syntax_dep, tomlc17_dep],
+                              dependencies : [zap_syntax_dep, zap_sema_dep, tomlc17_dep],
                               include_directories : inc
 )
 zap_frontend_dep = declare_dependency(link_with : zap_frontend, include_directories : inc)
 
-zap_zir_verifier = static_library('zap_zir_verifier',
-                                  'src/ir/borrow_provenance.cpp',
-                                  'src/ir/borrow_verifier.cpp',
-                                  'src/ir/call_contract.cpp',
-                                  'src/ir/control_flow_graph.cpp',
-                                  'src/ir/dead_phi_elimination.cpp',
-                                  'src/ir/ownership_flow.cpp',
-                                  'src/ir/ownership_lowering.cpp',
-                                  'src/ir/ownership_liveness.cpp',
-                                  'src/ir/zir_verifier.cpp',
-                                  'src/ir/zir_verifier_function.cpp',
-                                  'src/ir/zir_verifier_types.cpp',
-                                  dependencies : zap_type_system_dep,
-                                  include_directories : inc
-)
-zap_zir_verifier_dep = declare_dependency(link_with : zap_zir_verifier, include_directories : inc)
+# Complete frontend dependency for compiler and tooling consumers.
+libzap_dep = declare_dependency(dependencies : zap_frontend_dep, version : meson.project_version())
 
-runtime_o = custom_target('zap_runtime',
-                         input : [
-                             'src/runtime/arc.c',
-                             'src/runtime/string.c',
-                             'src/runtime/process.c',
-                             'src/runtime/network.c',
-                             'src/runtime/tls.c'
-                         ],
-                         output : 'runtime.o',
-                         command : [c.cmd_array(), zap_stdlib_compile_defs, '-r', '@INPUT@', '-o', '@OUTPUT@'],
-                         depend_files : [
-                             'src/runtime/arc_layout.h',
-                             'src/runtime/allocation_internal.h',
-                             'src/runtime/network_internal.h',
-                             'src/runtime/string_layout.h',
-                             'src/runtime/string_internal.h'
-                         ],
-                         build_by_default : true
-)
+if get_option('build_compiler')
+    zap_zir_verifier = static_library('zap_zir_verifier',
+                                      'src/ir/borrow_provenance.cpp',
+                                      'src/ir/borrow_verifier.cpp',
+                                      'src/ir/call_contract.cpp',
+                                      'src/ir/control_flow_graph.cpp',
+                                      'src/ir/dead_phi_elimination.cpp',
+                                      'src/ir/ownership_flow.cpp',
+                                      'src/ir/ownership_lowering.cpp',
+                                      'src/ir/ownership_liveness.cpp',
+                                      'src/ir/zir_verifier.cpp',
+                                      'src/ir/zir_verifier_function.cpp',
+                                      'src/ir/zir_verifier_types.cpp',
+                                      dependencies : zap_type_system_dep,
+                                      include_directories : inc
+    )
+    zap_zir_verifier_dep = declare_dependency(link_with : zap_zir_verifier, include_directories : inc)
 
-zapc_sources = [
-    'src/main.cpp', 'src/ir/ir_generator.cpp', 'src/ir/function_reachability.cpp', 'src/sema/binder.cpp',
-    'src/sema/binder_calls.cpp', 'src/sema/binder_conversions.cpp',
-    'src/sema/binder_declaration_binding.cpp', 'src/sema/binder_module_predeclare.cpp',
-    'src/sema/binder_stmts.cpp', 'src/sema/binder_exprs.cpp',
-    'src/sema/binder_mutability.cpp',
-    'src/sema/constant_evaluator.cpp',
-    'src/sema/binder_generic_functions.cpp', 'src/sema/binder_generic_types.cpp',
-    'src/sema/binder_types.cpp', 'src/codegen/llvm_codegen.cpp',
-    'src/codegen/llvm_codegen_constants.cpp', 'src/codegen/llvm_codegen_zir.cpp',
-    'src/codegen/llvm_codegen_arc.cpp', 'src/codegen/class_arc_emitter.cpp',
-    'src/driver/driver.cpp', 'src/driver/process.cpp', 'src/driver/args/argparse.cpp',
-    'src/utils/stream.cpp'
-]
+    runtime_o = custom_target('zap_runtime',
+                             input : [
+                                 'src/runtime/arc.c',
+                                 'src/runtime/string.c',
+                                 'src/runtime/process.c',
+                                 'src/runtime/network.c',
+                                 'src/runtime/tls.c'
+                             ],
+                             output : 'runtime.o',
+                             command : [c.cmd_array(), runtime_compile_args, '-r', '@INPUT@', '-o', '@OUTPUT@'],
+                             depend_files : [
+                                 'src/runtime/arc_layout.h',
+                                 'src/runtime/allocation_internal.h',
+                                 'src/runtime/network_internal.h',
+                                 'src/runtime/string_layout.h',
+                                 'src/runtime/string_internal.h'
+                             ],
+                             build_by_default : true
+    )
 
-zapc_args = [
-    '-DZAPC_RUNTIME_PATH="' + runtime_o.full_path() + '"',
-    '-DZAPC_CORE_DIR="' + meson.current_source_dir() / 'core' + '"',
-    '-DZAPC_STDLIB_DIR="' + meson.current_source_dir() / 'std' + '"'
-]
+    zapc_sources = [
+        'src/main.cpp', 'src/ir/ir_generator.cpp', 'src/ir/function_reachability.cpp',
+        'src/codegen/llvm_codegen.cpp',
+        'src/codegen/llvm_codegen_constants.cpp', 'src/codegen/llvm_codegen_zir.cpp',
+        'src/codegen/llvm_codegen_arc.cpp', 'src/codegen/class_arc_emitter.cpp',
+        'src/driver/driver.cpp', 'src/driver/process.cpp', 'src/driver/args/argparse.cpp'
+    ]
 
-zapc = executable('zapc',
-                  zapc_sources,
-                  dependencies : [
-                      llvm_dep,
-                      zap_type_system_dep,
-                      zap_sema_conversions_dep,
-                      zap_type_layout_dep,
-                      zap_frontend_dep,
-                      zap_syntax_dep,
-                      zap_zir_verifier_dep
-                  ],
-                  cpp_args : zapc_args,
-)
+    zapc_args = [
+        '-DZAPC_RUNTIME_PATH="' + runtime_o.full_path() + '"',
+        '-DZAPC_CORE_DIR="' + meson.current_source_dir() / 'core' + '"',
+        '-DZAPC_STDLIB_DIR="' + meson.current_source_dir() / 'std' + '"'
+    ]
+
+    zapc = executable('zapc',
+                      zapc_sources,
+                      dependencies : [
+                          llvm_dep,
+                          libzap_dep,
+                          zap_zir_verifier_dep
+                      ],
+                      cpp_args : zapc_args,
+    )
+
+endif
 
 doxygen = find_program('doxygen', required : false)
 if doxygen.found()
@@ -162,81 +190,82 @@ if doxygen.found()
 endif
 
 if get_option('build_testing')
+    test('frontend-session', executable('zap-frontend-session-tests',
+                                       'tests/cpp/frontend_session_test.cpp',
+                                       dependencies : libzap_dep))
     test('type-identity', executable('zap-type-identity-tests', 'tests/cpp/type_identity_test.cpp', dependencies : zap_type_system_dep))
     test('conversions', executable('zap-conversion-tests', 'tests/cpp/conversion_test.cpp', dependencies : zap_sema_conversions_dep))
     test('type-layout', executable('zap-type-layout-tests', 'tests/cpp/type_layout_test.cpp', dependencies : zap_type_layout_dep))
-    test('zir-verifier', executable('zap-zir-verifier-tests', 'tests/cpp/zir_verifier_test.cpp', dependencies : zap_zir_verifier_dep))
-    test('ownership-lowering', executable('zap-ownership-lowering-tests', 'tests/cpp/ownership_lowering_test.cpp', dependencies : zap_zir_verifier_dep))
-    test('borrow-analysis', executable('zap-borrow-analysis-tests', 'tests/cpp/borrow_analysis_test.cpp', dependencies : zap_zir_verifier_dep))
     test('project-configuration', executable('zap-project-configuration-tests',
                                               'tests/cpp/project_configuration_test.cpp',
                                               dependencies : zap_frontend_dep))
-    test('function-reachability', executable('zap-function-reachability-tests', ['tests/cpp/function_reachability_test.cpp', 'src/ir/function_reachability.cpp'], dependencies : zap_type_system_dep))
-    test('zir-reachability',
-         files('tests/scripts/check_zir_reachability.sh'),
-         args : [
-             zapc.full_path(),
-             meson.current_source_dir() / 'tests/zir_reachability/main.zp',
-             meson.current_source_dir() / 'tests/zir_reachability/caller.c',
-             meson.current_source_dir() / 'tests/zir_reachability/library.zp',
-             meson.current_build_dir() / 'zir-reachability-test'
-         ],
-         depends : zapc
-    )
-    test('zir-class-reachability',
-         files('tests/scripts/check_zir_class_reachability.sh'),
-         args : [
-             zapc.full_path(),
-             meson.current_source_dir() / 'tests/zir_class_reachability/main.zp',
-             meson.current_build_dir() / 'zir-class-reachability-test.zir'
-         ],
-         depends : zapc
-    )
-
-    runtime_test = executable('zap-runtime-instrumentation-tests',
-                              'tests/cpp/runtime_instrumentation_test.c',
-                              'src/runtime/arc.c',
-                              'src/runtime/string.c', 'src/runtime/process.c',
-                              'src/runtime/network.c',
-                              'src/runtime/tls.c',
-                              include_directories : inc,
-                              c_args : ['-DZAP_RUNTIME_INSTRUMENTATION=1'],
-                              dependencies : [m_dep, openssl_dep]
-    )
-    test('runtime-instrumentation', runtime_test)
-
-    test('runtime-core-exports',
-         files('tests/scripts/check_runtime_exports.sh'),
-         args : [
-             runtime_o.full_path(),
-             meson.current_source_dir() / 'tests/runtime/core_runtime_exports.txt'
-         ],
-         depends : runtime_o
-    )
-
-    if get_option('zap_enable_runtime_instrumentation')
-        test('runtime-instrumentation-ir',
-             files('tests/scripts/check_runtime_instrumentation_ir.sh'),
+    if get_option('build_compiler')
+        test('zir-verifier', executable('zap-zir-verifier-tests', 'tests/cpp/zir_verifier_test.cpp', dependencies : zap_zir_verifier_dep))
+        test('ownership-lowering', executable('zap-ownership-lowering-tests', 'tests/cpp/ownership_lowering_test.cpp', dependencies : zap_zir_verifier_dep))
+        test('borrow-analysis', executable('zap-borrow-analysis-tests', 'tests/cpp/borrow_analysis_test.cpp', dependencies : zap_zir_verifier_dep))
+        test('function-reachability', executable('zap-function-reachability-tests', ['tests/cpp/function_reachability_test.cpp', 'src/ir/function_reachability.cpp'], dependencies : zap_type_system_dep))
+        test('zir-reachability',
+             files('tests/scripts/check_zir_reachability.sh'),
              args : [
                  zapc.full_path(),
-                 meson.current_source_dir() / 'tests/class_arc_test.zp',
-                 meson.current_build_dir() / 'runtime-instrumentation.ll'
+                 meson.current_source_dir() / 'tests/zir_reachability/main.zp',
+                 meson.current_source_dir() / 'tests/zir_reachability/caller.c',
+                 meson.current_source_dir() / 'tests/zir_reachability/library.zp',
+                 meson.current_build_dir() / 'zir-reachability-test'
+             ],
+             depends : zapc
+        )
+        test('zir-class-reachability',
+             files('tests/scripts/check_zir_class_reachability.sh'),
+             args : [
+                 zapc.full_path(),
+                 meson.current_source_dir() / 'tests/zir_class_reachability/main.zp',
+                 meson.current_build_dir() / 'zir-class-reachability-test.zir'
              ],
              depends : zapc
         )
 
-        test('runtime-ownership-counts',
-             files('tests/scripts/run_runtime_ownership_counts.sh'),
-             args : [
-                 zapc.full_path(),
-                 meson.current_source_dir() / 'tests/runtime_instrumentation/ownership_counts.zp',
-                 meson.current_build_dir() / 'runtime-ownership-counts-test'
-             ],
-             depends : zapc
+        runtime_test = executable('zap-runtime-instrumentation-tests',
+                                  'tests/cpp/runtime_instrumentation_test.c',
+                                  'src/runtime/arc.c',
+                                  'src/runtime/string.c', 'src/runtime/process.c',
+                                  'src/runtime/network.c',
+                                  'src/runtime/tls.c',
+                                  include_directories : inc,
+                                  c_args : ['-DZAP_RUNTIME_INSTRUMENTATION=1'],
+                                  dependencies : [m_dep, openssl_dep]
         )
+        test('runtime-instrumentation', runtime_test)
+
+        test('runtime-core-exports',
+             files('tests/scripts/check_runtime_exports.sh'),
+             args : [
+                 runtime_o.full_path(),
+                 meson.current_source_dir() / 'tests/runtime/core_runtime_exports.txt'
+             ],
+             depends : runtime_o
+        )
+
+        if get_option('zap_enable_runtime_instrumentation')
+            test('runtime-instrumentation-ir',
+                 files('tests/scripts/check_runtime_instrumentation_ir.sh'),
+                 args : [
+                     zapc.full_path(),
+                     meson.current_source_dir() / 'tests/class_arc_test.zp',
+                     meson.current_build_dir() / 'runtime-instrumentation.ll'
+                 ],
+                 depends : zapc
+            )
+
+            test('runtime-ownership-counts',
+                 files('tests/scripts/run_runtime_ownership_counts.sh'),
+                 args : [
+                     zapc.full_path(),
+                     meson.current_source_dir() / 'tests/runtime_instrumentation/ownership_counts.zp',
+                     meson.current_build_dir() / 'runtime-ownership-counts-test'
+                 ],
+                 depends : zapc
+            )
+        endif
     endif
-endif
-
-if get_option('include_lsp')
-    subdir('src/lsp')
 endif

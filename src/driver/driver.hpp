@@ -120,6 +120,20 @@ public:
     return true; // Condition is always true.
   }
 
+  /// @brief Returns if the current target is windows.
+  bool is_target_windows() const noexcept {
+    const std::string &tt = get_target_triple();
+    if (tt.empty())
+#ifdef _WIN32
+      return true; // Host target is windows.
+#else
+      return false;
+#endif
+    else
+      return get_target_triple().find(
+          "windows"); // Windows targets have "windows" as the OS set.
+  }
+
   /// @brief Returns a file extension based on the file format given.
   /// @return Read-only string.
   constexpr static const char *
@@ -127,13 +141,8 @@ public:
     switch (type) {
     default:
       [[fallthrough]];
-    case args::OutputType::EXEC: // This should depend on the target set, not
-                                 // host.
-#ifdef _WIN32
-      return ".exe";
-#else
-      return "";
-#endif
+    case args::OutputType::EXEC:
+      return ""; // No .exe because I never seen this being used on executables.
     case args::OutputType::OBJECT:
       return ".o";
     case args::OutputType::ASM:
